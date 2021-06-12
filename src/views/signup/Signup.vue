@@ -53,6 +53,12 @@ export default defineComponent({
                 password
             })
 
+            if (data.data) {
+                this.$store.dispatch('setUser', data)
+                this.$store.dispatch('setAuth')
+                return this.$router.push({name: 'Admin', path: '/admin'})
+            }
+
             if (data.msg) {
                 this.errors.push(data.msg)
                 setTimeout(() => {

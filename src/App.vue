@@ -19,4 +19,11 @@
   color: #2c3e50;
 }
 
+.isloading {
+  display: flex;
+  padding: auto;
+  margin: 10rem auto;
+  justify-content: center;
+}
+
 </style>
