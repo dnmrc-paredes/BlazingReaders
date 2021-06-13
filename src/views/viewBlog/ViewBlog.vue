@@ -1,6 +1,10 @@
 <template>
     <main>
 
+        <div class="header">
+            <the-header/>
+        </div>
+
         <transition name="blog" mode="out-in" >
             <div v-if="isLoading" class="isloading">
                 <sync-loader :loading="isLoading" :color="color" :size="size"></sync-loader>
@@ -10,10 +14,27 @@
                 <div class="title">
                     <h1> {{ blog.title }} </h1>
                 </div>
-                <img :src="`http://localhost:8000/${blog.img}`" alt="blog img">
+                <img id="blogimg" :src="`http://localhost:8000/${blog.img}`" alt="blog img">
                 <div class="content">
-                    <p> {{ blog.content }} </p>
+                    <p id="content" > {{ blog.content }} </p>
                 </div>
+
+                <div class="rate">
+                    <p>
+                        <img src="https://img.icons8.com/ios-glyphs/25/2c3e50/facebook-like.png"/>
+                        Like it? Give it a thumbs up!
+                    </p>
+                </div>
+
+                <div class="commentsection">
+                    <div class="commenticon">
+                        <p @click="loadComments" >
+                            <img src="https://img.icons8.com/ios-glyphs/25/2c3e50/speech-bubble-with-dots.png"/>
+                            View all comments.
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </transition>
 
@@ -48,6 +69,9 @@ export default defineComponent({
             const {data} = await axios.get(`http://localhost:8000/getoneblog/${this.paramsID}`)
             this.blog = data.data
             this.isLoading = false
+        },
+        loadComments() {
+            console.log('load')
         }
     },
     computed: {
@@ -74,19 +98,40 @@ export default defineComponent({
     }
 }
 
+@keyframes shake {
+    0% {
+        transform: rotate(20deg);
+    }
+    50% {
+        transform: rotate(-20deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+
 main {
     min-height: 100vh;
     display: flex;
     justify-content: center;
+    margin: 2rem 0;
 }
 
 h1 {
-    margin: 4rem 0;
+    margin: 2rem 0;
+    font-family: var(--big);
+
 }
 
-img {
-    width: 100%;
+p#content {
+    font-family: var(--small);
+    font-weight: 500;
+}
+
+img#blogimg {
+    width: 50%;
     margin-bottom: 3rem;
+    margin: auto;
 }
 
 .blog-enter-active {
@@ -101,7 +146,7 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0 5rem;
+    margin: 3rem 5rem 0rem 5rem;
 }
 
 .title {
@@ -110,8 +155,57 @@ img {
 }
 
 .content {
+    margin-top: 1rem;
     display: flex;
     justify-content: flex-start;
+}
+
+.rate {
+    margin-top: 1rem;
+}
+
+.rate img {
+    cursor: pointer;
+    margin-right: 0.5rem;
+    transition-property: all;
+    transition-duration: 0.3s;
+}
+
+.rate img:hover {
+    animation: shake 0.3s ease-in;
+}
+
+.rate p {
+    display: flex;
+    align-items: center;
+    font-family: var(--small);
+    font-weight: 400;
+}
+
+.commentsection {
+    margin-top: 1rem;
+}
+
+.commenticon {
+    cursor: pointer;
+}
+
+.commenticon img {
+    cursor: pointer;
+    margin-right: 0.5rem;
+    transition-property: all;
+    transition-duration: 0.3s;
+}
+
+.commenticon img:hover {
+    animation: shake 0.3s ease-in;
+}
+
+.commenticon p {
+    display: flex;
+    align-items: center;
+    font-family: var(--small);
+    font-weight: 400;
 }
 
 </style>

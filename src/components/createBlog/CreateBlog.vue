@@ -57,6 +57,10 @@ export default defineComponent({
                 }
             })
 
+            if (data.msg === 'Blog created.') {
+                this.toggleForm()
+            }
+
             if (data.msg) {
                 this.errors.push(data.msg)
                 setTimeout(() => {

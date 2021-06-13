@@ -42,7 +42,7 @@ export default defineComponent({
             this.isCreateOpen = !this.isCreateOpen
         },
         logout() {
-            this.$store.dispatch('setAuth')
+            this.$store.dispatch('unsetAuth')
             this.$router.push({name: 'Login', path: '/login'})
         }
     }

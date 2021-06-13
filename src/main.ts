@@ -7,6 +7,7 @@ import { Iuser } from './interfaces/user'
 
 // Global Components
 import TheSidebar from '@/components/sidebar/TheSidebar.vue'
+import TheHeader from '@/components/header/TheHeader.vue'
 
 declare module '@vue/runtime-core' {
     // Declare your own store states.
@@ -14,6 +15,9 @@ declare module '@vue/runtime-core' {
       user: Iuser
       isAuth: boolean
       token: string
+      dropdown?: {
+        isDropdownOpen: boolean
+      }
     }
   
     interface ComponentCustomProperties {
@@ -24,6 +28,7 @@ declare module '@vue/runtime-core' {
 
 createApp(App).
 component('the-sidebar', TheSidebar).
+component('the-header', TheHeader ).
 use(store).
 use(router).
 mount('#app')

@@ -8,4 +8,6 @@ export interface Iuser {
     role: string
     myBlogs: Iblog[]
     isEdit: boolean
+    following: Iuser[]
+    followers: Iuser[]
 }
