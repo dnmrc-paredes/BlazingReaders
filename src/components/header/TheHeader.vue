@@ -7,19 +7,19 @@
         <div class="navlinks">
             <router-link to="/" > Home </router-link>
             <router-link to="/blogs" > Blogs </router-link>
-            <router-link to="/contact" > Contacts </router-link>
+            <router-link to="/about" > About </router-link>
             <!-- <p> <img @click="toggle" src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> </p> -->
-            <div class="dropdown">
+            <div v-if="isAuth" class="dropdown">
                 <p> <img @click="toggle" src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> </p>
                 <div v-if="dropdownStatus" class="droplist">
-                    <li> Profile </li>
+                    <li @click="toProfile" > Profile </li>
                     <li @click="toDashboard" v-if="userRole === 'admin'" > Dashboard </li>
-                    <li v-else> Become a Creator </li>
+                    <li v-else> Become a Publisher </li>
                     <li> Settings </li>
                     <li @click="logout" > Logout </li>
                 </div>
             </div>
-            <!-- <p @click="logout" > Logout </p> -->
+            <p v-else @click="login" > Login </p>
         </div>
     </nav>
 </template>
@@ -29,6 +29,9 @@ import {defineComponent} from 'vue'
 
 export default defineComponent({
     methods: {
+        login() {
+            this.$router.push({name: 'Login', path: '/login'})
+        },
         logout() {
             this.toggle()
             this.$store.dispatch('unsetAuth')
@@ -39,6 +42,10 @@ export default defineComponent({
         },
         toDashboard() {
             this.$router.push({name: 'Admin', path: '/admin'})
+        },
+        toProfile() {
+            this.toggle()
+            this.$router.push({name: 'Profile', path: '/profile'})
         }
     },
     computed: {
@@ -47,6 +54,9 @@ export default defineComponent({
         },
         userRole() {
             return this.$store.state.user.role
+        },
+        isAuth() {
+            return this.$store.state.isAuth
         }
     }
 })

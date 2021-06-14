@@ -12,8 +12,8 @@
                     <div class="title">
                         <h1> <router-link :to="{name: 'OneBlog', params: {blogID: blog._id} }" > {{ blog.title }} </router-link> </h1>
                         <div class="likescomments">
-                            <p> <img src="https://img.icons8.com/ios-glyphs/25/2c3e50/facebook-like.png"/> {{ blog.likes.length }} </p>
-                            <p> <img src="https://img.icons8.com/ios-glyphs/25/2c3e50/speech-bubble-with-dots.png"/> {{ blog.comments.length }} </p>
+                            <p> <img src="https://img.icons8.com/ios-glyphs/20/2c3e50/facebook-like.png"/> {{ blog.likes.length }} </p>
+                            <p> <img src="https://img.icons8.com/ios-glyphs/20/2c3e50/speech-bubble-with-dots.png"/> {{ blog.comments.length }} </p>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
 
                 <div v-for="user in publishers" :key="user._id" class="user">
                     <div class="userinfo">
-                        <p> <img src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> {{ user.firstName }} {{ user.lastName }} </p>
+                        <p class="publisher" @click="toPublisher(user._id, `${user.firstName} ${user.lastName}`)" > <img src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> {{ user.firstName }} {{ user.lastName }} </p>
                         <button> Follow </button>
                     </div>
                 </div>
@@ -74,6 +74,9 @@ export default defineComponent({
             this.blogs = data.blogs
             this.publishers = data.randomUsers
             this.isLoading = false
+        },
+        toPublisher(userID: string, name: string) {
+            this.$router.push({name: 'Publisher', params: { userID, name }})
         }
     },
     created() {
@@ -129,6 +132,10 @@ a {
     color: #2c3e50;
 }
 
+p.publisher {
+    cursor: pointer;
+}
+
 .header {
     flex: 1;
 }
@@ -180,10 +187,10 @@ a {
 .blog {
     display: flex;
     /* align-items: center; */
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     margin: 1rem 1rem 0rem 1rem;
     background-color: white;
-    border-bottom: solid 1px black;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.247);
     /* box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); */
 }
 

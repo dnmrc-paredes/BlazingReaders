@@ -3,9 +3,11 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 // Views 
 import Root from '@/views/root/Root.vue'
 import Blogs from '@/views/blogs/Blogs.vue'
-import Contact from '@/views/contact/Contact.vue'
+import About from '@/views/about/About.vue'
 import Login from '@/views/login/Login.vue'
 import Signup from '@/views/signup/Signup.vue'
+import Profile from '@/views/profile/Profile.vue'
+import PublisherProfile from '@/views/publishersProfile/PublishersProfile.vue'
 import Admin from '@/views/admin/Admin.vue'
 import AllUsers from '@/views/users/AllUsers.vue'
 import ViewBlog from '@/views/viewBlog/ViewBlog.vue'
@@ -28,9 +30,9 @@ const routes: Array<RouteRecordRaw> = [
     component: Blogs
   },
   {
-    path: '/contact',
-    name: 'Contact',
-    component: Contact
+    path: '/about',
+    name: 'About',
+    component: About
   },
   {
     path: '/login',
@@ -59,6 +61,25 @@ const routes: Array<RouteRecordRaw> = [
       return next()
 
     }
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+    beforeEnter(to, from, next) {
+
+      if (!State.state.isAuth) {
+        return next('/login')
+      }
+
+      return next()
+
+    }
+  },
+  {
+    path: '/publishersprofile/:userID/:name',
+    name: 'Publisher',
+    component: PublisherProfile
   },
   {
     path: '/admin',

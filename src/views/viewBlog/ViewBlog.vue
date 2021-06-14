@@ -19,6 +19,12 @@
                     <p id="content" > {{ blog.content }} </p>
                 </div>
 
+                <div class="thepublisher">
+                    <p @click="toPublisher(blog.createdBy._id, `${blog.createdBy.firstName} ${blog.createdBy.lastName}`)">
+                        Publisher: @{{ blog.createdBy.firstName }}{{ blog.createdBy.lastName }}
+                    </p>
+                </div>
+
                 <div class="rate">
                     <p>
                         <img src="https://img.icons8.com/ios-glyphs/25/2c3e50/facebook-like.png"/>
@@ -69,9 +75,13 @@ export default defineComponent({
             const {data} = await axios.get(`http://localhost:8000/getoneblog/${this.paramsID}`)
             this.blog = data.data
             this.isLoading = false
+            console.log(data.data)
         },
         loadComments() {
             console.log('load')
+        },
+        toPublisher(userID: string, name: string) {
+            this.$router.push({name: 'Publisher', params: { userID, name }})
         }
     },
     computed: {
@@ -124,6 +134,7 @@ h1 {
 }
 
 p#content {
+    margin-top: 1rem;
     font-family: var(--small);
     font-weight: 500;
 }
@@ -158,6 +169,16 @@ img#blogimg {
     margin-top: 1rem;
     display: flex;
     justify-content: flex-start;
+}
+
+.thepublisher {
+    margin-top: 1rem;
+}
+
+.thepublisher p {
+    font-family: var(--small);
+    font-weight: 400;
+    cursor: pointer;
 }
 
 .rate {

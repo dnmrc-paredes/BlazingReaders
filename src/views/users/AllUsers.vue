@@ -5,7 +5,7 @@
         </div>
 
         <div class="adminbox">
-            <h1> Manage Users </h1>
+            <h1> Manage Followers </h1>
 
             <transition name="userbox" >
                 <div v-if="isLoading" class="isloading">
@@ -15,15 +15,15 @@
                     <tr class="tabletitle">
                         <th class="tabrow"> First Name </th>
                         <th class="tabrow"> Last Name </th>
-                        <th class="tabrow"> Email </th>
-                        <th class="tabrow"> Role </th>
+                        <!-- <th class="tabrow"> Email </th> -->
+                        <th class="tabrow"> Block/Unblock </th>
                     </tr>
 
                     <transition-group name="users" > 
                         <tr class="tr" v-for="user in users" :key="user._id">
                             <th class="th" > {{ user.firstName }} </th>
                             <th class="th" > {{ user.lastName }} </th>
-                            <th class="th" > {{ user.email }} </th>
+                            <!-- <th class="th" > {{ user.email }} </th> -->
                             <th class="th" v-if="!user.isEdit" > {{ user.role }} <img @click="toggleEdit(user._id)" src="https://img.icons8.com/material-rounded/20/000000/edit--v2.png"/> </th>
                             <th v-else>
                                 <edit-role :role="user.role" :userID="user._id" @close-form="toggleEdit($event)" @refetch-data="getAllUsers"/>
