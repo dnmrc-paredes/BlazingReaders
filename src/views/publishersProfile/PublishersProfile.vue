@@ -12,7 +12,7 @@
             <div v-if="!isLoading" class="profilebox">
                 <div class="profilename">
                     <h1> {{ user.firstName }} {{ user.lastName }} </h1>
-                    <button v-if="notSame" > Follow </button>
+                    <button @click="followUser(user._id)" v-if="!notSame" > {{ isFollowed ? 'Unfollow' : 'Follow' }} </button>
                 </div>
 
                 <p v-if="isPublisher" > Publisher <img src="https://img.icons8.com/material-sharp/15/000000/star.png"/> </p>
@@ -23,14 +23,14 @@
                 </div>
             </div>
         </transition>
-        
+
         <transition name="tab" >
             <div v-if="!isLoading" class="switchtabs">
-                <div @click="toggleTab('feed')" class="feed">
+                <div @click="toggleTab('feed')" class="feedtab">
                     <p> Feed </p>
                 </div>
 
-                <div @click="toggleTab('publish')" class="publish">
+                <div @click="toggleTab('publish')" class="publishtab">
                     <p> Blogs </p>
                 </div>
             </div>
@@ -39,13 +39,35 @@
         <div v-if="tab === 'feed'" class="feedtab">
             <transition name="profileroot3" >
                 <div v-if="!isLoading" class="profilefeed">
-                    <h2> Feed </h2>
+                    
+                    <div class="nofeed">
+                        <h2 v-if="myTweets.length > 0"> Feed </h2>
+                        <h2 v-else > No tweets </h2>
+                    </div>
 
-                    <div class="createtweet">
+                    <div v-if="notSame" class="createtweet">
                         <form @submit.prevent="" method="post">
                             <textarea name="tweet" placeholder="Say something..." cols="30" rows="10"></textarea>
-                            <button> Create </button>
+                            <button> Tweet </button>
                         </form>
+                    </div>
+
+                    <div class="feedbox">
+                        <transition-group name="everytweet" >
+                            <div v-for="tweet in myTweets" :key="tweet._id" class="feed">
+                                <div class="feedupper">
+                                    <h2> <img src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> {{ user.firstName }} {{ user.lastName }} </h2>
+                                    <div v-if="notSame" class="openoptions">
+                                        <img @click="toggleOptions(tweet._id)" src="https://img.icons8.com/material-sharp/25/000000/dots-loading--v3.png"/>
+                                        <div v-if="tweet.openOptions" class="optionslist">
+                                            <li> Edit </li>
+                                            <li> Delete </li>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p> {{ tweet.content }} </p>
+                            </div>
+                        </transition-group>
                     </div>
                 </div>
             </transition>
@@ -79,10 +101,10 @@ import axios from 'axios'
 // Components 
 import SyncLoader from 'vue-spinner/src/SyncLoader.vue'
 
-
 // Typescript
 import { Roles } from '@/interfaces/enumsRole'
 import { Iuser } from '@/interfaces/user'
+import { Itweet } from '@/interfaces/tweet'
 
 import {defineComponent} from 'vue'
 
@@ -94,6 +116,7 @@ export default defineComponent({
         return {
             user: {} as Iuser,
             isLoading: true,
+            myTweets: [] as Itweet[],
             color: '#FFAF00',
             size: '15px',
             tab: 'feed'
@@ -103,14 +126,27 @@ export default defineComponent({
         async getUserInfo() {
             const {data} = await axios.get(`http://localhost:8000/getuserinfo/${this.userID}`)
             this.user = data.data
+            this.myTweets = data.myTweets
             this.isLoading = false
-            console.log(data.data)
+            console.log(data)
+        },
+        async followUser(otherID: string) {
+            const {data} = await axios.patch(`http://localhost:8000/followunfollow/${this.myID}/${otherID}`, null, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            })
+            console.log(data)
+            this.getUserInfo()
         },
         toggleTab(tabName: string) {
             this.tab = tabName
         }
     },
     computed: {
+        myID() {
+            return this.$store.state.user._id
+        },
         userID() {
             return this.$route.params.userID
         },
@@ -127,6 +163,14 @@ export default defineComponent({
             }
 
             return false
+        },
+        isFollowed() {
+            const result = this.user.followers?.filter((item) => item._id == this.myID).length as number
+
+            return result
+        },
+        token() {
+            return this.$store.state.token
         }
     },
     created() {
@@ -140,6 +184,7 @@ export default defineComponent({
 
 /* Animations & Transitions */
 
+.btn-enter-active,
 .tab-enter-active,
 .profileroot-enter-active,
 .profileroot2-enter-active, 
@@ -225,8 +270,8 @@ button:hover {
     font-weight: 500;
 }
 
-.switchtabs .feed,
-.switchtabs .publish {
+.switchtabs .feedtab,
+.switchtabs .publishtab {
     flex: 1;
     display: flex;
     justify-content: center;
@@ -248,6 +293,12 @@ button:hover {
 .createtweet form button {
     width: 100px;
 }
+
+/* If No Tweets */
+
+/* .nofeed {
+    margin-top: 2rem;
+} */
 
 /* Blogs */
 
@@ -285,6 +336,37 @@ button:hover {
     margin-right: 1rem;
     font-family: var(--big);
     font-weight: 500;
+}
+
+
+/* Feed Box */
+
+.feedbox {
+    margin-top: 2rem;
+    height: 500px;
+    overflow-y: auto;
+}
+
+.feed {
+    margin: 1rem 0;
+    padding: 0.5rem 0.5rem 1.5rem 0.5rem;
+}
+
+.feed img {
+    cursor: pointer;
+}
+
+.feed h2 {
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.feedupper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 </style>

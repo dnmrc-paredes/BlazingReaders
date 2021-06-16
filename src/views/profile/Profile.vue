@@ -24,12 +24,12 @@
         </transition>
 
         <transition name="tab" >
-            <div v-if="!isLoading" class="switchtabs">
-                <div @click="toggleTab('feed')" class="feed">
+            <div v-if="!isLoading && isPublisher " class="switchtabs">
+                <div @click="toggleTab('feed')" class="feedtab">
                     <p> Feed </p>
                 </div>
 
-                <div @click="toggleTab('publish')" class="publish">
+                <div @click="toggleTab('publish')" class="publishtab">
                     <p> Blogs </p>
                 </div>
             </div>
@@ -42,9 +42,27 @@
 
                     <div class="createtweet">
                         <form @submit.prevent="" method="post">
-                            <textarea name="tweet" placeholder="Say something..." cols="30" rows="10"></textarea>
-                            <button> Create </button>
+                            <textarea v-model="tweet" name="tweet" placeholder="Say something..." cols="30" rows="10"></textarea>
+                            <button :disabled="isEmpty" @click="addTweet" > Tweet </button>
                         </form>
+                    </div>
+
+                    <div class="feedbox">
+                        <transition-group name="everytweet" >
+                            <div v-for="tweet in myTweets" :key="tweet._id" class="feed">
+                                <div class="feedupper">
+                                    <h2> <img src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> {{ user.firstName }} {{ user.lastName }} </h2>
+                                    <div class="openoptions">
+                                        <img @click="toggleOptions(tweet._id)" src="https://img.icons8.com/material-sharp/25/000000/dots-loading--v3.png"/>
+                                        <div v-if="tweet.openOptions" class="optionslist">
+                                            <li> Edit </li>
+                                            <li> Delete </li>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p> {{ tweet.content }} </p>
+                            </div>
+                        </transition-group>
                     </div>
                 </div>
             </transition>
@@ -79,6 +97,7 @@ import SyncLoader from 'vue-spinner/src/SyncLoader.vue'
 // Typescript
 import { Roles } from '@/interfaces/enumsRole'
 import { Iuser } from '@/interfaces/user'
+import { Itweet } from '@/interfaces/tweet'
 
 import {defineComponent} from 'vue'
 
@@ -89,6 +108,8 @@ export default defineComponent({
     data() {
         return {
             user: {} as Iuser,
+            myTweets: [] as Itweet[],
+            tweet: "" as string,
             isLoading: true,
             color: '#FFAF00',
             size: '15px',
@@ -99,11 +120,31 @@ export default defineComponent({
         async getUserInfo() {
             const {data} = await axios.get(`http://localhost:8000/getuserinfo/${this.userID}`)
             this.user = data.data
+
+            data.myTweets.forEach((el: Itweet) => {
+                el.openOptions = false
+            })
+
+            this.myTweets = data.myTweets
             this.isLoading = false
-            console.log(data.data)
+        },
+        async addTweet() {
+            await axios.post(`http://localhost:8000/createtweet/${this.userID}`, {
+                content: this.tweet
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            })
+
+            this.getUserInfo()
         },
         toggleTab(tabName: string) {
             this.tab = tabName
+        },
+        toggleOptions(tweetID: string) {
+            const foundTweet = this.myTweets.find(item => item._id === tweetID) as Itweet
+            foundTweet.openOptions = !foundTweet.openOptions
         }
     },
     computed: {
@@ -116,6 +157,23 @@ export default defineComponent({
             }
 
             return false
+        },
+        notSame() {
+            if (this.userID === this.$store.state.user._id) {
+                return true
+            }
+
+            return false
+        },
+        isEmpty() {
+            if (!this.tweet) {
+                return true
+            }
+
+            return false
+        },
+        token() {
+            return this.$store.state.token
         }
     },
     created() {
@@ -129,6 +187,7 @@ export default defineComponent({
 
 /* Animations & Transitions */
 
+.everytweet-enter-active,
 .tab-enter-active,
 .profileroot-enter-active,
 .profileroot2-enter-active, 
@@ -176,6 +235,17 @@ button:hover {
     background-color: rgba(207, 143, 3, 0.877);
 }
 
+button:disabled {
+    color: white;
+    background-color: #010101;
+    transition-duration: 0.3s;
+}
+
+textarea {
+    font-family: var(--small);
+    font-weight: 400;
+}
+
 .header {
     margin-bottom: 5rem;
 }
@@ -213,8 +283,8 @@ button:hover {
     font-weight: 500;
 }
 
-.switchtabs .feed,
-.switchtabs .publish {
+.switchtabs .feedtab,
+.switchtabs .publishtab {
     flex: 1;
     display: flex;
     justify-content: center;
@@ -272,6 +342,65 @@ button:hover {
     margin-right: 1rem;
     font-family: var(--big);
     font-weight: 500;
+}
+
+/* Feed Box */
+
+.feedbox {
+    margin-top: 2rem;
+    height: 500px;
+    overflow-y: auto;
+}
+
+.feed {
+    margin: 1rem 0;
+    padding: 0.5rem 0.5rem 1.5rem 0.5rem;
+}
+
+.feed img {
+    cursor: pointer;
+}
+
+.feed h2 {
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.feedupper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Options Dropdown */
+
+.openoptions {
+    position: relative;
+}
+
+.optionslist {
+    background-color: whitesmoke;
+    padding: 0.5rem 1rem;
+    position: absolute;
+    border-radius: 5px;
+    right: 1px;
+    top: 20px;
+    
+}
+
+.optionslist li {
+    margin: 0.3rem 0;
+    list-style: none;
+    cursor: pointer;
+    font-family: var(--small);
+}
+
+/* Conditional Border */
+
+.withborder {
+    border-bottom: solid 1px rgba(0, 0, 0, 0.308);
 }
 
 </style>

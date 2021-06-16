@@ -7,6 +7,7 @@ import About from '@/views/about/About.vue'
 import Login from '@/views/login/Login.vue'
 import Signup from '@/views/signup/Signup.vue'
 import Profile from '@/views/profile/Profile.vue'
+import Settings from '@/views/settings/Settings.vue'
 import PublisherProfile from '@/views/publishersProfile/PublishersProfile.vue'
 import Admin from '@/views/admin/Admin.vue'
 import AllUsers from '@/views/users/AllUsers.vue'
@@ -66,6 +67,20 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profile',
     name: 'Profile',
     component: Profile,
+    beforeEnter(to, from, next) {
+
+      if (!State.state.isAuth) {
+        return next('/login')
+      }
+
+      return next()
+
+    }
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings,
     beforeEnter(to, from, next) {
 
       if (!State.state.isAuth) {

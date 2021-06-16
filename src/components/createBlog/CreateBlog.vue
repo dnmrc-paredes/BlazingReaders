@@ -15,7 +15,7 @@
             <label for="title"> Blog Title </label>
                 <input class="withdesign" v-model="title" type="text" name="title">
             <label for="content"> Blog Content </label>
-                <textarea class="withdesign" name="content" v-model="content" cols="30" rows="10"/>
+                <textarea wrap="soft" class="withdesign" name="content" v-model="content" cols="30" rows="10"/>
 
             <button :disabled="isEmpty" type="submit"> Create Blog </button>
         </form>

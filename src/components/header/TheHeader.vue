@@ -15,7 +15,7 @@
                     <li @click="toProfile" > Profile </li>
                     <li @click="toDashboard" v-if="userRole === 'admin'" > Dashboard </li>
                     <li v-else> Become a Publisher </li>
-                    <li> Settings </li>
+                    <li @click="toSettings" > Settings </li>
                     <li @click="logout" > Logout </li>
                 </div>
             </div>
@@ -46,6 +46,10 @@ export default defineComponent({
         toProfile() {
             this.toggle()
             this.$router.push({name: 'Profile', path: '/profile'})
+        },
+        toSettings() {
+            this.toggle()
+            this.$router.push({name: 'Settings', path: '/settings', query: {tab: 'profile'}})
         }
     },
     computed: {

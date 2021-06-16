@@ -9,7 +9,7 @@
             <h1> About </h1>
 
             <p>
-                This project is a MEVNT stack (MongoDB, Express JS, Vue JS, Node JS, TypeScript) is a blog application
+                This project is a MEVNT stack (MongoDB, Express JS, Vue JS, Node JS & TypeScript) is a blog application
                 where users can be a normal/publisher role, they can create a blog a post/tweet for followers to see
                 normal users can comment on a tweet/post, like and able to comment at like a blog of a publisher. users
                 can follow a user and etc.

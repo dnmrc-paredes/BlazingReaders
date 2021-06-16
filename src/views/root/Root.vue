@@ -76,7 +76,17 @@ export default defineComponent({
             this.isLoading = false
         },
         toPublisher(userID: string, name: string) {
-            this.$router.push({name: 'Publisher', params: { userID, name }})
+
+            if (userID === this.userID) {
+                return this.$router.push({name: 'Profile', path: '/profile'})
+            }
+
+            return this.$router.push({name: 'Publisher', params: { userID, name }})
+        }
+    },
+    computed: {
+        userID() {
+            return this.$store.state.user._id
         }
     },
     created() {
