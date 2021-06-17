@@ -10,11 +10,13 @@
                 </transition-group>
             </div>
 
-            <label for="email"> Email Address </label>
-            <input type="email" v-model="email" placeholder="sample@gmail.com" name="email">
+            <label for="currentpassword"> Current Password </label>
+            <input type="password" v-model="currentPass" name="currentpassword">
+            <label for="newpassword"> New Password </label>
+            <input type="password" v-model="newPass" name="newpassword">
             <label for="confirmpassword"> Confirm Password </label>
-            <input type="password" v-model="password" name="password">
-            <button :disabled="isEmpty" type="submit"> Confirm </button>
+            <input type="password" v-model="confirmPass" name="confirmpassword">
+            <button type="submit"> Confirm </button>
         </form>
     </main>
 </template>
@@ -27,8 +29,9 @@ import {defineComponent} from 'vue'
 export default defineComponent({
     data() {
         return {
-            email: this.$store.state.rootUser.email as string,
-            password: "" as string,
+            currentPass: "" as string,
+            newPass: "" as string,
+            confirmPass: "" as string,
             errors: [] as string[]
         }
     },
@@ -37,9 +40,16 @@ export default defineComponent({
 
             this.errors = []
 
-            const {data} = await axios.patch(`http://localhost:8000/editemail/${this.userID}`, {
-                email: this.email,
-                password: this.password
+            if (this.newPass !== this.confirmPass) {
+                this.errors.push('Password must match.')
+                return setTimeout(() => {
+                    this.errors = []
+                }, 5000)
+            }
+
+            const {data} = await axios.patch(`http://localhost:8000/editpassword/${this.userID}`, {
+                currentPass: this.currentPass,
+                newPass: this.newPass
             }, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
@@ -47,8 +57,10 @@ export default defineComponent({
             })
 
             if (data.status === 'ok') {
-                alert('Email Changed Successfully.')
-                return this.$store.dispatch('myInfo')
+                this.currentPass = ""
+                this.newPass = ""
+                this.confirmPass = ""
+                return alert('Password Succesfully Changed.')
             }
 
             if (data.msg) {
@@ -57,25 +69,19 @@ export default defineComponent({
                     this.errors = []
                 }, 5000)
             }
-            
-        }
+
+        }    
     },
     computed: {
-        userID() {
-            return this.$store.state.user._id
-        },
         token() {
             return this.$store.state.token
         },
-        isEmpty() {
-            if (!this.password || !this.email) {
-                return true
-            }
-
-            return false
+        userID() {
+            return this.$store.state.user._id
         }
     }
 })
+
 </script>
 
 <style scoped>

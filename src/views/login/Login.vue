@@ -56,9 +56,11 @@ export default defineComponent({
                 this.$store.dispatch('setAuth')
                 
                 if (data.data.role === Roles.ADMIN) {
+                    this.$store.dispatch('myInfo')
                     return this.$router.push({name: 'Admin', path: '/admin'})
                 }
 
+                this.$store.dispatch('myInfo')
                 return this.$router.push({name: 'Root', path: '/'})
 
             }

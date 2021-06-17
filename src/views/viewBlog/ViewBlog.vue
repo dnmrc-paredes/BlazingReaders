@@ -124,13 +124,13 @@ main {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    margin: 2rem 0;
+    flex-direction: column;
+    margin: 0 0 2rem 0;
 }
 
 h1 {
     margin: 2rem 0;
     font-family: var(--big);
-
 }
 
 p#content {

@@ -21,7 +21,7 @@
                     </transition-group>
                 </div>
 
-                <button @click="loadMore" > Load more </button>
+                <button :disabled="isTheSame" @click="loadMore" > {{ isTheSame ? 'Max Results' : 'Load more' }} </button>
             </div>
         </transition>
         
@@ -49,19 +49,26 @@ export default defineComponent({
             isLoading: true,
             color: '#FFAF00',
             size: '15px',
-            limit: 0 as number
+            limit: 0 as number,
+            isTheSame: false
         }
     },
     methods: {
         async getAllBLogs() {
             this.limit+=5
-            const {data} = await axios.get(`http://localhost:8000/allblogs?limit=${this.limit}`)
+            const {data} = await axios.get(`http://localhost:8000/allblogs/${this.userID}?limit=${this.limit}`)
             console.log(data)
             this.blogs = data.blogs
             this.isLoading = false
+            this.isTheSame = data.max
         },
         async loadMore() {
             this.getAllBLogs()
+        }
+    },
+    computed: {
+        userID() {
+            return this.$store.state.user._id
         }
     },
     created() {
@@ -110,14 +117,20 @@ button {
 
 button:hover {
     background-color: rgba(207, 143, 3, 0.877);
-} 
-
-.header {
-    margin-bottom: 5rem;
 }
 
+button:disabled {
+    color: white;
+    background-color: #010101;
+    transition-duration: 0.3s;
+}
+
+/* .header {
+    margin-bottom: 5rem;
+} */
+
 .blogrootbox {
-    margin: 7rem 3rem 3rem 3rem;
+    margin: 2rem 3rem 3rem 3rem;
 }
 
 .blog {

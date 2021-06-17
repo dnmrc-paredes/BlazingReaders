@@ -32,6 +32,7 @@ export default createStore<State>({
     plugins: [createPersistedState()],
     state: {
         user: {} as Iuser,
+        rootUser: {} as Iuser,
         isAuth: false,
         token: ''
     },

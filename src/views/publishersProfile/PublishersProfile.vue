@@ -237,7 +237,7 @@ button:hover {
 }
 
 .profilebox {
-    margin: 10rem 2rem 0 2rem;
+    margin: 2rem 2rem 0 2rem;
     padding: 2rem;
     /* border-bottom: solid black 1px; */
 }

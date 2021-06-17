@@ -13,7 +13,7 @@
             </div>
             
             <transition name="nameform" >
-                <name-form :firstName="user.firstName" :lastName="user.lastName" v-if="nameOpen"/>
+                <name-form v-if="nameOpen"/>
             </transition>
 
             <div @click="editEmail" class="link">
@@ -24,14 +24,13 @@
             </div>
 
             <transition name="emailform" >
-                <mail-form :currentEmail="user.email" v-if="emailOpen" />
+                <mail-form v-if="emailOpen" />
             </transition>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import axios from 'axios'
 
 // Typescript
 import { Iuser } from '@/interfaces/user'
@@ -51,14 +50,11 @@ export default defineComponent({
         return {
             nameOpen: false,
             emailOpen: false,
-            user: {} as Iuser
+            user: {} as Iuser,
+            isLoading: true
         }
     },
     methods: {
-        async getUserInfo() {
-            const {data} = await axios.get(`http://localhost:8000/getuserinfo/${this.userID}`)
-            this.user = data.data
-        },
         editName() {
             this.nameOpen = !this.nameOpen
         },
@@ -70,9 +66,6 @@ export default defineComponent({
         userID() {
             return this.$store.state.user._id
         }
-    },
-    created() {
-        this.getUserInfo()
     }
 })
 </script>

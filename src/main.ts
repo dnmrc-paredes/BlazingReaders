@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     // Declare your own store states.
     interface State {
       user: Iuser
+      rootUser: Iuser
       isAuth: boolean
       token: string
       dropdown?: {

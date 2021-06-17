@@ -2,25 +2,56 @@
     <main>
         <form @submit.prevent="submitEdit" method="post">
             <label for="firstname"> First Name </label>
-            <input type="text" :value="firstName" name="firstname">
+            <input type="text" v-model="firstName" name="firstname">
             <label for="lastname"> Last Name </label>
-            <input type="text" :value="lastName" name="lastname">
-            <button type="submit"> Confirm </button>
+            <input type="text" v-model="lastName" name="lastname">
+            <button :disabled="isEmpty" type="submit"> Confirm </button>
         </form>
     </main>
 </template>
 
 <script lang="ts">
+import axios from 'axios'
+
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-    props: {
-        firstName: String,
-        lastName: String
+    data() {
+        return {
+            firstName: this.$store.state.rootUser.firstName,
+            lastName: this.$store.state.rootUser.lastName,
+        }
     },
     methods: {
-        submitEdit() {
-            console.log(this.firstName, this.lastName)
+        async submitEdit() {
+            const {data} = await axios.patch(`http://localhost:8000/editname/${this.userID}`, {
+                firstName: this.firstName,
+                lastName: this.lastName
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            })
+            
+            if (data.status === 'ok') {
+                alert('Name Changed Successfully.')
+                return this.$store.dispatch('myInfo')
+            }
+        }
+    },
+    computed: {
+        userID() {
+            return this.$store.state.user._id
+        },
+        token() {
+            return this.$store.state.token
+        },
+        isEmpty() {
+            if (!this.firstName || !this.lastName) {
+                return true
+            }
+
+            return false
         }
     }
 })
@@ -32,6 +63,8 @@ main {
     display: flex;
     justify-content: center;
     padding: 3rem 0;
+    background-color: whitesmoke;
+    border-radius: 5px;
 }
 
 label {

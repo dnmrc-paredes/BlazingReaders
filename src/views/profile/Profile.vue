@@ -17,9 +17,14 @@
                 <p v-if="isPublisher" > Publisher <img src="https://img.icons8.com/material-sharp/15/000000/star.png"/> </p>
 
                 <div class="followingandfollowers">
-                    <p> Following: {{ user.following.length }} </p>
+                    <p @click="toggleFollowing" > Following: {{ user.following.length }} </p>
                     <p v-if="isPublisher" > Followers: {{ user.followers.length }} </p>
                 </div>
+
+                <transition name="togglefollow" >
+                    <userlist @close-following="toggleFollowing" v-if="toggleFollow" :user="user" title="Following" />
+                </transition>
+                
             </div>
         </transition>
 
@@ -93,6 +98,7 @@ import axios from 'axios'
 
 // Components 
 import SyncLoader from 'vue-spinner/src/SyncLoader.vue'
+import Userlist from '@/components/userlist/Userlist.vue'
 
 // Typescript
 import { Roles } from '@/interfaces/enumsRole'
@@ -103,7 +109,8 @@ import {defineComponent} from 'vue'
 
 export default defineComponent({
     components: {
-        SyncLoader
+        SyncLoader,
+        Userlist
     },
     data() {
         return {
@@ -111,6 +118,7 @@ export default defineComponent({
             myTweets: [] as Itweet[],
             tweet: "" as string,
             isLoading: true,
+            toggleFollow: false,
             color: '#FFAF00',
             size: '15px',
             tab: 'feed'
@@ -145,6 +153,9 @@ export default defineComponent({
         toggleOptions(tweetID: string) {
             const foundTweet = this.myTweets.find(item => item._id === tweetID) as Itweet
             foundTweet.openOptions = !foundTweet.openOptions
+        },
+        toggleFollowing() {
+            this.toggleFollow = !this.toggleFollow
         }
     },
     computed: {
@@ -187,12 +198,17 @@ export default defineComponent({
 
 /* Animations & Transitions */
 
+.togglefollow-enter-active,
 .everytweet-enter-active,
 .tab-enter-active,
 .profileroot-enter-active,
 .profileroot2-enter-active, 
 .profileroot3-enter-active {
     animation: fade 0.3s ease-in;
+}
+
+.togglefollow-leave-active {
+    animation: fade 0.3s ease-in reverse;
 }
 
 h1 {
@@ -251,8 +267,9 @@ textarea {
 }
 
 .profilebox {
-    margin: 10rem 2rem 0 2rem;
-    padding: 2rem;  
+    margin: 2rem 2rem 0 2rem;
+    padding: 2rem;
+    position: relative;
 }
 
 .profilename {

@@ -35,6 +35,7 @@ export default defineComponent({
         logout() {
             this.toggle()
             this.$store.dispatch('unsetAuth')
+            this.$store.dispatch('unsetMyInfo')
             this.$router.push({name: 'Login', path: '/login'})
         },
         toggle() {
@@ -71,8 +72,8 @@ export default defineComponent({
 
 nav {
     display: flex;
-    position: fixed;
-    top: 0;
+    /* position: fixed;
+    top: 0; */
     width: 100%;
     padding: 1rem 2rem;
     background-color: #FFAF00;
@@ -121,6 +122,7 @@ a:hover {
 }
 
 .dropdown {
+    z-index: 1;
     position: relative;
 }
 

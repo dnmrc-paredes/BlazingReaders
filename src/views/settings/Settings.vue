@@ -10,7 +10,9 @@
             </div>
 
             <div class="pagecontent">
-                <component :tae="'asdfsaf'" :is="query"/>  
+                <keep-alive>
+                    <component :is="query"/>
+                </keep-alive>  
             </div>
         </div>
     </main>

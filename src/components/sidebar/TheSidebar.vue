@@ -43,6 +43,7 @@ export default defineComponent({
         },
         logout() {
             this.$store.dispatch('unsetAuth')
+            this.$store.dispatch('unsetMyInfo')
             this.$router.push({name: 'Login', path: '/login'})
         }
     }

@@ -17,5 +17,11 @@ export const mutations: MutationTree<State> = {
     },
     unsetAuth(state) {
         state.isAuth = false
+    },
+    myInfo(state, payload) {
+        state.rootUser = payload
+    },
+    unsetMyInfo(state) {
+        state.rootUser = {} as Iuser
     }
 }

@@ -30,12 +30,20 @@
             <div class="publishers">
                 <h3 v-if="!isLoading" class="youmightwanttofollow" > You might want to follow: </h3>
 
-                <div v-for="user in publishers" :key="user._id" class="user">
-                    <div class="userinfo">
-                        <p class="publisher" @click="toPublisher(user._id, `${user.firstName} ${user.lastName}`)" > <img src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> {{ user.firstName }} {{ user.lastName }} </p>
-                        <button> Follow </button>
+                <transition name="nopublishers" >
+                    <div v-if="publishers.length <= 0 && !isLoading " class="nopublishers">
+                        <h4> No suggestions </h4>
                     </div>
-                </div>
+                </transition>
+
+                <transition-group name="suggestpublishers" mode="out-in" >
+                    <div v-for="user in publishers" :key="user._id" class="user">
+                        <div class="userinfo">
+                            <p class="publisher" @click="toPublisher(user._id, `${user.firstName} ${user.lastName}`)" > <img src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> {{ user.firstName }} {{ user.lastName }} </p>
+                            <button @click="followUser(user._id)" > Follow </button>
+                        </div>
+                    </div>
+                </transition-group>
             </div>
         </div>
 
@@ -69,11 +77,20 @@ export default defineComponent({
     },
     methods: {
         async getAllBLogs() {
-            const {data} = await axios.get('http://localhost:8000/allblogs')
+            const {data} = await axios.get(`http://localhost:8000/allblogs/${this.userID}`)
             console.log(data)
             this.blogs = data.blogs
             this.publishers = data.randomUsers
             this.isLoading = false
+        },
+        async followUser(otherID: string) {
+            const {data} = await axios.patch(`http://localhost:8000/followunfollow/${this.userID}/${otherID}`, null, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            })
+            console.log(data)
+            this.getAllBLogs()
         },
         toPublisher(userID: string, name: string) {
 
@@ -87,6 +104,9 @@ export default defineComponent({
     computed: {
         userID() {
             return this.$store.state.user._id
+        },
+        token() {
+            return this.$store.state.token
         }
     },
     created() {
@@ -97,6 +117,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+/* Animations & Transition */
+
+.suggestpublishers-enter-active,
+.nopublishers-enter-active {
+    animation: fade 0.3s ease-in;
+}
+
+.suggestpublishers-leave-active,
+.nopublishers-leave-active {
+    animation: fade 0.3s ease-out reverse;
+}
 
 main {
     display: flex;
@@ -152,7 +184,8 @@ p.publisher {
 
 .rootbox {
     flex: 2;
-    margin-top: 6rem;
+    /* margin-top: 6rem; */
+    margin-top: 2rem;
     display: flex;
 }
 
@@ -234,6 +267,13 @@ p.publisher {
     margin-right: 1rem;
     font-family: var(--big);
     font-weight: 500;
+}
+
+/* If No Suggested Users */
+
+.nopublishers {
+    display: flex;
+    justify-content: center;
 }
 
 
