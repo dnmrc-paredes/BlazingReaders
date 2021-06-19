@@ -36,7 +36,7 @@ export default defineComponent({
             this.toggle()
             this.$store.dispatch('unsetAuth')
             this.$store.dispatch('unsetMyInfo')
-            this.$router.push({name: 'Login', path: '/login'})
+            this.$router.push({name: 'Root', path: '/'})
         },
         toggle() {
             this.$store.dispatch('dropdown/toggleDropdown')

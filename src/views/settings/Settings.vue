@@ -58,12 +58,12 @@ main {
     position: relative;
 }
 
-.header {
+/* .header {
     margin-bottom: 5rem;
-}
+} */
 
 .settingsrootbox {
-    margin: 7rem 1rem 3rem 1rem;
+    margin: 4rem 1rem 3rem 1rem;
     display: flex;
 }
 

@@ -28,9 +28,6 @@
 <script lang="ts">
 import axios from 'axios'
 
-// Typescript
-import { Roles } from '@/interfaces/enumsRole'
-
 import {defineComponent} from 'vue'
 
 export default defineComponent({
@@ -54,15 +51,8 @@ export default defineComponent({
             if (data.data) {
                 this.$store.dispatch('setUser', data)
                 this.$store.dispatch('setAuth')
-                
-                if (data.data.role === Roles.ADMIN) {
-                    this.$store.dispatch('myInfo')
-                    return this.$router.push({name: 'Admin', path: '/admin'})
-                }
-
                 this.$store.dispatch('myInfo')
                 return this.$router.push({name: 'Root', path: '/'})
-
             }
             
             if (data.msg) {

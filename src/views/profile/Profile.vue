@@ -18,11 +18,15 @@
 
                 <div class="followingandfollowers">
                     <p @click="toggleFollowing" > Following: {{ user.following.length }} </p>
-                    <p v-if="isPublisher" > Followers: {{ user.followers.length }} </p>
+                    <p @click="toggleFollowers" v-if="isPublisher" > Followers: {{ user.followers.length }} </p>
                 </div>
 
-                <transition name="togglefollow" >
-                    <userlist @close-following="toggleFollowing" v-if="toggleFollow" :user="user" title="Following" />
+                <transition name="togglefollow">
+                    <userlist @close-following="toggleFollowing" v-if="toggleFollow" :users="user.following" title="Following" />
+                </transition>
+
+                <transition name="togglefollowers" >
+                    <userlist @close-following="toggleFollowers" :users="user.followers" v-if="toggleFollower" title="Followers" />
                 </transition>
                 
             </div>
@@ -119,6 +123,7 @@ export default defineComponent({
             tweet: "" as string,
             isLoading: true,
             toggleFollow: false,
+            toggleFollower: false,
             color: '#FFAF00',
             size: '15px',
             tab: 'feed'
@@ -156,6 +161,9 @@ export default defineComponent({
         },
         toggleFollowing() {
             this.toggleFollow = !this.toggleFollow
+        },
+        toggleFollowers() {
+            this.toggleFollower = !this.toggleFollower
         }
     },
     computed: {
@@ -198,6 +206,7 @@ export default defineComponent({
 
 /* Animations & Transitions */
 
+.togglefollowers-enter-active,
 .togglefollow-enter-active,
 .everytweet-enter-active,
 .tab-enter-active,
@@ -207,6 +216,7 @@ export default defineComponent({
     animation: fade 0.3s ease-in;
 }
 
+.togglefollowers-leave-active,
 .togglefollow-leave-active {
     animation: fade 0.3s ease-in reverse;
 }
@@ -279,6 +289,10 @@ textarea {
 
 .followingandfollowers {
     display: flex;
+}
+
+.followingandfollowers p {
+    cursor: pointer;
 }
 
 .followingandfollowers p:first-child {

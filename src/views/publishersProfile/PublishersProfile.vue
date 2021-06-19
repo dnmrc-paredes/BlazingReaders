@@ -18,9 +18,22 @@
                 <p v-if="isPublisher" > Publisher <img src="https://img.icons8.com/material-sharp/15/000000/star.png"/> </p>
 
                 <div class="followingandfollowers">
-                    <p> Following: {{ user.following.length }} </p>
-                    <p v-if="isPublisher" > Followers: {{ user.followers.length }} </p>
+                    <p @click="toggleFollowing" > Following: {{ user.following.length }} </p>
+                    <p @click="toggleFollowers" v-if="isPublisher" > Followers: {{ user.followers.length }} </p>
                 </div>
+
+                <transition name="togglefollow">
+                    <userlist @close-following="toggleFollowing" v-if="toggleFollow" :users="user.following" title="Following" />
+                </transition>
+
+                <transition name="togglefollowers" >
+                    <userlist @close-following="toggleFollowers" :users="user.followers" v-if="toggleFollower" title="Followers" />
+                </transition>
+
+                <transition name="loginpopup" >
+                    <login-pop-up @close-form="togglePopUp" v-if="isLoggedIn" />
+                </transition>
+
             </div>
         </transition>
 
@@ -100,6 +113,7 @@ import axios from 'axios'
 
 // Components 
 import SyncLoader from 'vue-spinner/src/SyncLoader.vue'
+import Userlist from '@/components/userlist/Userlist.vue'
 
 // Typescript
 import { Roles } from '@/interfaces/enumsRole'
@@ -107,16 +121,21 @@ import { Iuser } from '@/interfaces/user'
 import { Itweet } from '@/interfaces/tweet'
 
 import {defineComponent} from 'vue'
+import { RouteLocation } from 'vue-router'
 
 export default defineComponent({
     components: {
-        SyncLoader
+        SyncLoader,
+        Userlist
     },
     data() {
         return {
             user: {} as Iuser,
             isLoading: true,
             myTweets: [] as Itweet[],
+            toggleFollow: false,
+            toggleFollower: false,
+            isLoggedIn: false,
             color: '#FFAF00',
             size: '15px',
             tab: 'feed'
@@ -131,6 +150,11 @@ export default defineComponent({
             console.log(data)
         },
         async followUser(otherID: string) {
+
+            if (!this.isAuth) {
+                return this.isLoggedIn = !this.isLoggedIn
+            }
+
             const {data} = await axios.patch(`http://localhost:8000/followunfollow/${this.myID}/${otherID}`, null, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
@@ -141,6 +165,15 @@ export default defineComponent({
         },
         toggleTab(tabName: string) {
             this.tab = tabName
+        },
+        toggleFollowing() {
+            this.toggleFollow = !this.toggleFollow
+        },
+        toggleFollowers() {
+            this.toggleFollower = !this.toggleFollower
+        },
+        togglePopUp() {
+            this.isLoggedIn = !this.isLoggedIn
         }
     },
     computed: {
@@ -149,6 +182,9 @@ export default defineComponent({
         },
         userID() {
             return this.$route.params.userID
+        },
+        isAuth() {
+            return this.$store.state.isAuth
         },
         isPublisher() {
             if (this.user.role === Roles.ADMIN) {
@@ -173,6 +209,15 @@ export default defineComponent({
             return this.$store.state.token
         }
     },
+    watch: {
+        $route(prev: RouteLocation, newValue: RouteLocation) {
+            if (prev.params.userID !== newValue.params.userID && prev.matched[0].path === newValue.matched[0].path) {
+                this.isLoading = true
+                this.getUserInfo()
+                return 
+            }
+        }
+    },
     created() {
         this.getUserInfo()
     }
@@ -184,12 +229,21 @@ export default defineComponent({
 
 /* Animations & Transitions */
 
+.loginpopup-enter-active,
+.togglefollowers-enter-active,
+.togglefollow-enter-active,
 .btn-enter-active,
 .tab-enter-active,
 .profileroot-enter-active,
 .profileroot2-enter-active, 
 .profileroot3-enter-active {
     animation: fade 0.3s ease-in;
+}
+
+.loginpopup-leave-active,
+.togglefollowers-leave-active,
+.togglefollow-leave-active {
+    animation: fade 0.3s ease-in reverse;
 }
 
 h1 {
@@ -249,6 +303,10 @@ button:hover {
 
 .followingandfollowers {
     display: flex;
+}
+
+.followingandfollowers p {
+    cursor: pointer;
 }
 
 .followingandfollowers p:first-child {

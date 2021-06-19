@@ -6,10 +6,15 @@
                 <h1> {{ title }} </h1>
             </div>
 
-            <div class="usersrootbox">
+            <div v-if="users.length === 0" class="noinfo">
+                <h2> No {{ title }} </h2>
+            </div>
+
+            <div v-else class="usersrootbox">
                 <div class="users">
-                    <div v-for="user in user.following" :key="user._id" class="user">
-                        <h3> {{ user.firstName }} {{ user.lastName }} </h3>
+                    <div v-for="user in users" :key="user._id" class="user">
+                        <h3 @click="toUser(user._id, `${user.firstName} ${user.lastName}`)" > <img src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> {{ user.firstName }} {{ user.lastName }} </h3>
+                        <!-- <router-link :to="{name: 'UsersProfile'}" > <img src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> {{ user.firstName }} {{ user.lastName }} </router-link> -->
                     </div>
                 </div>
             </div>
@@ -22,14 +27,28 @@ import {defineComponent} from 'vue'
 
 export default defineComponent({
     props: [
-        'user',
+        'users',
         'title'
     ],
     methods: {
         closeForm() {
             this.$emit('close-following')
+        },
+        toUser(userID: string, name: string) {
+            this.closeForm()
+
+            if (this.userID == userID) {
+                return this.$router.push({name: 'Profile', path: 'profile'})
+            }
+
+            this.$router.push({name: 'UsersProfile', params: { userID, name } })
         }
-    }   
+    },
+    computed: {
+        userID(): string {
+            return this.$store.state.user._id as string
+        }
+    }
 })
 </script>
 
@@ -46,6 +65,13 @@ main {
     justify-content: center;
     flex-direction: column;
     z-index: 1;
+}
+
+h3 {
+    display: flex;
+    align-items: center;
+    font-family: var(--small);
+    font-weight: 400;
 }
 
 .close {
@@ -69,6 +95,7 @@ main {
     height: 80%;
     width: 80%;
     z-index: 3;
+    overflow-y: auto;
 }
 
 .title {
@@ -90,10 +117,26 @@ main {
     /* background-color: orange; */
 }
 
+.user img {
+    margin-right: 0.3rem;
+}
+
 .user:hover {
     background-color: orange;
     border-radius: 5px;
     color: white;
+}
+
+/* If No Info */
+
+.noinfo {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.noinfo h2 {
+    color: rgb(177, 171, 171);
 }
 
 </style>

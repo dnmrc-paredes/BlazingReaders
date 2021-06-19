@@ -9,8 +9,11 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "chart.js": "^3.3.2",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
+    "vue-chart-3": "^0.1.4",
+    "vue-chartjs": "^3.5.1",
     "vue-router": "^4.0.0-0",
     "vue-spinner": "^1.0.4",
     "vuex": "^4.0.0-0",

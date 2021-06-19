@@ -92,8 +92,8 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/publishersprofile/:userID/:name',
-    name: 'Publisher',
+    path: '/usersprofile/:userID/:name',
+    name: 'UsersProfile',
     component: PublisherProfile
   },
   {

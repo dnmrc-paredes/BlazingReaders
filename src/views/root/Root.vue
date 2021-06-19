@@ -1,6 +1,10 @@
 <template>
     <main>
 
+        <transition name="loginpopup" >
+            <login-pop-up @close-form="togglePopUp" v-if="isLoggedIn" />
+        </transition>
+
         <div class="header">
             <the-header/>
         </div>
@@ -71,6 +75,7 @@ export default defineComponent({
             blogs: [] as Iblog[],
             publishers: [] as Iuser[],
             isLoading: true,
+            isLoggedIn: false,
             color: '#FFAF00',
             size: '15px',
         }
@@ -84,6 +89,11 @@ export default defineComponent({
             this.isLoading = false
         },
         async followUser(otherID: string) {
+
+            if (!this.isAuth) {
+                return this.isLoggedIn = !this.isLoggedIn
+            }
+
             const {data} = await axios.patch(`http://localhost:8000/followunfollow/${this.userID}/${otherID}`, null, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
@@ -98,15 +108,21 @@ export default defineComponent({
                 return this.$router.push({name: 'Profile', path: '/profile'})
             }
 
-            return this.$router.push({name: 'Publisher', params: { userID, name }})
+            return this.$router.push({name: 'UsersProfile', params: { userID, name }})
+        },
+        togglePopUp() {
+            this.isLoggedIn = !this.isLoggedIn
         }
     },
     computed: {
         userID() {
-            return this.$store.state.user._id
+            return this.$store.state.user._id ?? 'notauth'
         },
         token() {
             return this.$store.state.token
+        },
+        isAuth() {
+            return this.$store.state.isAuth
         }
     },
     created() {
@@ -120,11 +136,13 @@ export default defineComponent({
 
 /* Animations & Transition */
 
+.loginpopup-enter-active,
 .suggestpublishers-enter-active,
 .nopublishers-enter-active {
     animation: fade 0.3s ease-in;
 }
 
+.loginpopup-leave-active,
 .suggestpublishers-leave-active,
 .nopublishers-leave-active {
     animation: fade 0.3s ease-out reverse;

@@ -12,7 +12,6 @@
 
 <style scoped>
 
-
 h1 {
     font-size: 4rem;
 }
