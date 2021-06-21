@@ -10,7 +10,7 @@ import Profile from '@/views/profile/Profile.vue'
 import Settings from '@/views/settings/Settings.vue'
 import PublisherProfile from '@/views/publishersProfile/PublishersProfile.vue'
 import Admin from '@/views/admin/Admin.vue'
-import AllUsers from '@/views/users/AllUsers.vue'
+import ManageBlogs from '@/views/manageBlogs/ManageBlogs.vue'
 import ViewBlog from '@/views/viewBlog/ViewBlog.vue'
 
 // Typescripts
@@ -111,9 +111,9 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/allusers',
-    name: 'AllUsers',
-    component: AllUsers,
+    path: '/manageblogs',
+    name: 'Manage',
+    component: ManageBlogs,
     beforeEnter(to, from, next) {
 
       if (!State.state.isAuth || State.state.user.role !== Roles.ADMIN) {

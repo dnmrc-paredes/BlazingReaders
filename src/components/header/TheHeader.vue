@@ -1,7 +1,7 @@
 <template>
     <nav>
         <div class="navlogo">
-            <h1> Lorem-Blog </h1>
+            <h1> Blazing </h1>
         </div>
 
         <div class="navlinks">

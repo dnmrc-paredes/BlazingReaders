@@ -5,19 +5,131 @@
         </div>
 
         <div class="adminbox">
-            <h1> Dashboard </h1>
+            <div class="title">
+                <h1> Dashboard </h1>
+            </div>
+
+            <div v-if="isLoading" class="isloading">
+                <sync-loader :loading="isLoading" :color="color" :size="size"></sync-loader>
+            </div>
+
+            <transition name="dashbox">
+                <div v-if="!isLoading" class="dashboardinfos">
+                    <div class="totalblogs">
+                        <h2> Total Blogs </h2>
+                        <p> {{ totalBlogs }} </p>
+                    </div>
+
+                    <div class="blogsinfo">
+                        <div class="mostlikes">
+                            <h1 class="most"> Top 3 Most Likes </h1>
+                            <div v-for="blog in mostLikes" :key="blog._id" class="blog">
+                                <!-- <h2> {{ blog.title }} </h2> -->
+                                <router-link :to="{name: 'OneBlog', params: { blogID: blog._id }}"> {{ blog.title }}  </router-link> 
+                                <p> Total Likes: {{ blog.totalLikes }} </p>
+                            </div>
+                        </div>
+
+                        <div class="mostcomments">
+                            <h1 class="most"> Top 3 Most Comments </h1>
+                            <div v-for="blog in mostComments" :key="blog._id" class="blog">
+                                <!-- <h2> {{ blog.title }} </h2> -->
+                                <router-link :to="{name: 'OneBlog', params: { blogID: blog._id }}"> {{ blog.title }}  </router-link> 
+                                <p> Total Comments: {{ blog.totalComments }} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
         </div>
     </main>
 </template>
 
+<script lang="ts">
+import axios from 'axios'
+
+// Typescript
+import {Iblog} from '@/interfaces/blogs'
+
+// Components 
+import SyncLoader from 'vue-spinner/src/SyncLoader.vue'
+
+import {defineComponent} from 'vue'
+
+export default defineComponent({
+    components: {
+        SyncLoader
+    },
+    data() {
+        return {
+            totalBlogs: undefined as undefined | number,
+            mostLikes: [] as Iblog[],
+            mostComments: [] as Iblog[],
+            isLoading: true,
+            color: '#FFAF00',
+            size: '15px',
+        }
+    },
+    methods: {
+        async dashboardInfo() {
+            const {data} = await axios.get(`http://localhost:8000/dashboard/${this.userID}`)
+            this.totalBlogs = data.allBlogs,
+            this.mostLikes = data.top3LikedBlogs,
+            this.mostComments = data.top3MostCommentedBlogs
+            this.isLoading = false
+        }
+    },
+    computed: {
+        userID() {
+            return this.$store.state.user._id
+        }
+    },
+    created() {
+        this.dashboardInfo()
+    }
+})
+</script>
+
 <style scoped>
 
-h1 {
-    font-size: 4rem;
+/* Animations & Transitions */
+
+.dashbox-enter-active {
+    animation: fade 0.3s ease-in;
 }
 
 main {
     display: flex;
+    justify-content: center;
+}
+
+h1 {
+    font-family: var(--big);
+    font-size: 4rem;
+}
+
+h2, a {
+    font-family: var(--big);
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: #2c3e50;
+}
+
+p {
+    margin-top: 0.5rem;
+    font-family: var(--small);
+    font-size: 1.1rem;
+    color: gray;
+    font-weight: 400;
+}
+
+main {
+    display: flex;
+    /* background-color: gainsboro; */
+}
+
+h1.most {
+    font-size: 1.5rem;
 }
 
 .sidebar {
@@ -29,6 +141,50 @@ main {
 .adminbox {
     flex: 20;
     margin: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dashboard */
+
+.totalblogs {
+    background-color: whitesmoke;
+    /* background-color: white; */
+    border-radius: 15px;
+    height: 100px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.dashboardinfos {
+    display: flex;
+    flex-direction: column;
+}
+
+.blogsinfo {
+    display: flex;
+}
+
+.dashboardinfos .mostlikes {
+    background-color: whitesmoke;
+    /* background-color: white; */
+    border-radius: 15px;
+    padding: 1rem;
+    margin: 0 0.5rem;
+    flex: 1;
+}
+
+.dashboardinfos .mostcomments {
+    background-color: whitesmoke;
+    /* background-color: white; */
+    border-radius: 15px;
+    padding: 1rem;
+    margin: 0 0.5rem;
+    flex: 1;
+}
+
+.blog {
+    margin: 1rem 0;
 }
 
 </style>

@@ -12,8 +12,15 @@
         <div v-else class="commentbox">
             <transition-group name="everycomment" >
                 <div v-for="item in comments" :key="item._id" class="comment">
-                    <h3> {{ item.commentBy.firstName }} {{ item.commentBy.lastName }} </h3>
-                    <p> {{ item.content }} </p>
+                    <div class="commentdetails">
+                        <h3> {{ item.commentBy.firstName }} {{ item.commentBy.lastName }} </h3>
+                        <p> {{ item.content }} </p>
+                    </div>
+
+                    <!-- <div class="controller">
+                         <p> <img src="https://img.icons8.com/ios-glyphs/22/2c3e50/facebook-like.png"/> </p>
+                         <p> <img src="https://img.icons8.com/ios-glyphs/22/2c3e50/speech-bubble-with-dots.png"/> </p>
+                    </div> -->
                 </div>
             </transition-group>
         </div>
@@ -58,8 +65,21 @@ h3 {
     padding: 1rem;
     border-radius: 5px;
     background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
     /* border-bottom: solid black 0.1px; */
 }
+
+.controller {
+    margin-top: 1rem;
+    display: flex;
+}
+
+.controller img {
+    margin-right: 0.5rem;
+}
+
+/* If No Comments */
 
 .nocomments {
     margin-top: 2rem;

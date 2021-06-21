@@ -38,7 +38,7 @@
         </transition>
 
         <transition name="tab" >
-            <div v-if="!isLoading" class="switchtabs">
+            <div v-if="!isLoading && user.role === 'admin'" class="switchtabs">
                 <div @click="toggleTab('feed')" class="feedtab">
                     <p> Feed </p>
                 </div>

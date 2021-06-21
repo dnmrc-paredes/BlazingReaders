@@ -10,8 +10,8 @@
                 </div>
             </transition-group>
 
-            <label for="img"> Blog Image </label>
-                <input class="fileinput" type="file" name="img">
+            <!-- <label for="img"> Blog Image </label>
+                <input class="fileinput" type="file" name="img"> -->
             <label for="title"> Blog Title </label>
                 <input class="withdesign" v-model="title" type="text" name="title">
             <label for="content"> Blog Content </label>
@@ -31,12 +31,13 @@ import {defineComponent} from 'vue'
 export default defineComponent({
     props: [
         'propTitle',
-        'propBtn'
+        'propBtn',
+        'blog'
     ],
     data() {
         return {
-            title: '' as string,
-            content: "" as string,
+            title: this.blog.title as string,
+            content: this.blog.content as string,
             errors: [] as string[]
         }
     },
@@ -49,19 +50,16 @@ export default defineComponent({
 
             this.errors = []
 
-            const formData = new FormData()
-            formData.append('img', e.target[0].files[0])
-            formData.append('title', this.title)
-            formData.append('content', this.content)
-
-            const {data} = await axios.post(`http://localhost:8000/createblog/${this.userID}`, formData , {
+            const {data} = await axios.patch(`http://localhost:8000/editblog/${this.blog._id}`, {
+                title: this.title,
+                content: this.content
+            }, {
                 headers: {
-                    "Content-Type": "multipart/form-data",
                     'Authorization': `Bearer ${this.token}`
                 }
             })
 
-            if (data.msg === 'Blog created.') {
+            if (data.msg === 'Blog Updated!') {
                 this.toggleForm()
             }
 
