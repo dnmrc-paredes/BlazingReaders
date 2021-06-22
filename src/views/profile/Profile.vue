@@ -65,7 +65,7 @@
                                         <img @click="toggleOptions(tweet._id)" src="https://img.icons8.com/material-sharp/25/000000/dots-loading--v3.png"/>
                                         <div v-if="tweet.openOptions" class="optionslist">
                                             <li> Edit </li>
-                                            <li> Delete </li>
+                                            <li @click="toggleModalOpen(tweet._id)" > Delete </li>
                                         </div>
                                     </div>
                                 </div>
@@ -93,6 +93,14 @@
                 </div>
             </transition>
         </div>
+
+        <modal v-if="modalState" >
+            <h3> Are you sure you want to delete? </h3>
+            <div class="grpbtns">
+                <button @click="deleteTweet" > Yes </button>
+                <button @click="toggleModalClose" > Cancel </button>
+            </div>
+        </modal>
         
     </main>
 </template>
@@ -103,6 +111,7 @@ import axios from 'axios'
 // Components 
 import SyncLoader from 'vue-spinner/src/SyncLoader.vue'
 import Userlist from '@/components/userlist/Userlist.vue'
+import Modal from '@/components/modal/Modal.vue'
 
 // Typescript
 import { Roles } from '@/interfaces/enumsRole'
@@ -114,7 +123,8 @@ import {defineComponent} from 'vue'
 export default defineComponent({
     components: {
         SyncLoader,
-        Userlist
+        Userlist,
+        Modal
     },
     data() {
         return {
@@ -124,6 +134,8 @@ export default defineComponent({
             isLoading: true,
             toggleFollow: false,
             toggleFollower: false,
+            modalState: false,
+            selectedID: "" as string,
             color: '#FFAF00',
             size: '15px',
             tab: 'feed'
@@ -152,6 +164,18 @@ export default defineComponent({
 
             this.getUserInfo()
         },
+        async deleteTweet() {
+            const {data} = await axios.delete(`http://localhost:8000/deletetweet/${this.userID}/${this.selectedID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            })
+            console.log(data)
+            if (data.status === 'ok') {
+                await this.getUserInfo()
+                return this.toggleModalClose()
+            }
+        },
         toggleTab(tabName: string) {
             this.tab = tabName
         },
@@ -164,6 +188,14 @@ export default defineComponent({
         },
         toggleFollowers() {
             this.toggleFollower = !this.toggleFollower
+        },
+        toggleModalOpen(tweetID: string) {
+            this.selectedID = tweetID
+            this.modalState = true
+        },
+        toggleModalClose() {
+            this.selectedID = ""
+            this.modalState = false
         }
     },
     computed: {
@@ -426,6 +458,17 @@ textarea {
     list-style: none;
     cursor: pointer;
     font-family: var(--small);
+}
+
+/* Modal */ 
+
+.grpbtns {
+    margin-top: 1rem;
+    display: flex;
+}
+
+.grpbtns button {
+    margin: 0 0.5rem;
 }
 
 /* Conditional Border */

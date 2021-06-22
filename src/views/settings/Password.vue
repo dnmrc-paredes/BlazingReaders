@@ -62,7 +62,6 @@ export default defineComponent({
     animation: fade 0.3s ease-in reverse;
 }
 
-
 h3 {
     font-weight: 400;
 }

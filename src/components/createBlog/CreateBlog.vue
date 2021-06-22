@@ -60,7 +60,7 @@ export default defineComponent({
                     'Authorization': `Bearer ${this.token}`
                 }
             })
-
+            console.log(formData)
             if (data.msg === 'Blog created.') {
                 this.toggleForm()
             }

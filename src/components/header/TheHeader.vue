@@ -10,7 +10,12 @@
             <router-link to="/about" > About </router-link>
             <!-- <p> <img @click="toggle" src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> </p> -->
             <div v-if="isAuth" class="dropdown">
-                <p> <img @click="toggle" src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> </p>
+                <p>
+                    <img id="profile" @click="toggle" v-if="myProfile" :src="`http://localhost:8000/${myProfile}`" alt="">
+                    <img v-else @click="toggle" src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/>
+                    <!-- <img id="profile" @click="toggle" v-if="myProfile" :src="`http://localhost:8000/${myProfile}`" alt="">
+                    <img @click="toggle" src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/>  -->
+                </p>
                 <div v-if="dropdownStatus" class="droplist">
                     <li @click="toProfile" > Profile </li>
                     <li @click="toDashboard" v-if="userRole === 'admin'" > Dashboard </li>
@@ -36,7 +41,7 @@ export default defineComponent({
             this.toggle()
             this.$store.dispatch('unsetAuth')
             this.$store.dispatch('unsetMyInfo')
-            this.$router.push({name: 'Root', path: '/'})
+            this.$router.replace({name: 'Root', path: '/'})
         },
         toggle() {
             this.$store.dispatch('dropdown/toggleDropdown')
@@ -62,6 +67,9 @@ export default defineComponent({
         },
         isAuth() {
             return this.$store.state.isAuth
+        },
+        myProfile() {
+            return this.$store.state.rootUser.avatar
         }
     }
 })
@@ -136,6 +144,13 @@ a:hover {
     flex-direction: column;
     right: 10px;
     width: 200px;
+}
+
+/* Profile Image */
+
+img#profile {
+    width: 40px;
+    border-radius: 50%;
 }
 
 </style>

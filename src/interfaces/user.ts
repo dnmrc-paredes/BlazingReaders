@@ -10,4 +10,5 @@ export interface Iuser {
     isEdit?: boolean
     following?: Iuser[]
     followers?: Iuser[]
+    avatar: string
 }
