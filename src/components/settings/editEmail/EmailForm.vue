@@ -43,7 +43,7 @@ export default defineComponent({
 
             this.errors = []
 
-            const {data} = await axios.patch(`http://localhost:8000/editemail/${this.userID}`, {
+            const {data} = await axios.patch(`https://blazing-readers-rest-api.herokuapp.com/editemail/${this.userID}`, {
                 email: this.email,
                 password: this.password
             }, {
@@ -157,6 +157,24 @@ form {
     font-family: var(--small);
     font-weight: 400;
     margin-bottom: 1rem;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 900px) {
+
+    form {
+        width: 50%;
+    }
+
+}
+
+@media screen and (max-width: 450px) {
+
+    form {
+        width: 80%;
+    }
+
 }
 
 </style>

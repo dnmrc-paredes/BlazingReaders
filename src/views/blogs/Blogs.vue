@@ -56,8 +56,7 @@ export default defineComponent({
     methods: {
         async getAllBLogs() {
             this.limit+=5
-            const {data} = await axios.get(`http://localhost:8000/allblogs/${this.userID}?limit=${this.limit}`)
-            console.log(data)
+            const {data} = await axios.get(`https://blazing-readers-rest-api.herokuapp.com/allblogs/${this.userID}?limit=${this.limit}`)
             this.blogs = data.blogs
             this.isLoading = false
             this.isTheSame = data.max

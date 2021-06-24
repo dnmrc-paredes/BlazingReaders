@@ -12,7 +12,7 @@
             <div v-if="!isLoading" class="profilebox">
                 <div class="profilename">
                     <h1>
-                        <img id="profile2" v-if="user.avatar" :src="`http://localhost:8000/${user.avatar}`" alt="">
+                        <img id="profile2" v-if="user.avatar" :src="`https://blazing-readers-rest-api.herokuapp.com/${user.avatar}`" alt="">
                         <img v-else src="https://img.icons8.com/ios-glyphs/45/2c3e50/user-male-circle.png"/>
                         {{ user.firstName }} {{ user.lastName }}
                     </h1>
@@ -151,7 +151,7 @@ export default defineComponent({
     },
     methods: {
         async getUserInfo() {
-            const {data} = await axios.get(`http://localhost:8000/getuserinfo/${this.userID}`)
+            const {data} = await axios.get(`https://blazing-readers-rest-api.herokuapp.com/getuserinfo/${this.userID}`)
             this.user = data.data
 
             data.myTweets.forEach((el: Itweet) => {
@@ -162,7 +162,7 @@ export default defineComponent({
             this.isLoading = false
         },
         async addTweet() {
-            await axios.post(`http://localhost:8000/createtweet/${this.userID}`, {
+            await axios.post(`https://blazing-readers-rest-api.herokuapp.com/createtweet/${this.userID}`, {
                 content: this.tweet
             }, {
                 headers: {
@@ -173,12 +173,12 @@ export default defineComponent({
             this.getUserInfo()
         },
         async deleteTweet() {
-            const {data} = await axios.delete(`http://localhost:8000/deletetweet/${this.userID}/${this.selectedID}`, {
+            const {data} = await axios.delete(`https://blazing-readers-rest-api.herokuapp.com/deletetweet/${this.userID}/${this.selectedID}`, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
                 }
             })
-            console.log(data)
+
             if (data.status === 'ok') {
                 await this.getUserInfo()
                 return this.toggleModalClose()

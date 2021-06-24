@@ -31,14 +31,13 @@ export default defineComponent({
                 return  this.isLoggedIn = !this.isLoggedIn
             }
 
-            const {data} = await axios.post(`http://localhost:8000/commentonblog/${this.userID}/${this.params}`, {
+            await axios.post(`https://blazing-readers-rest-api.herokuapp.com/commentonblog/${this.userID}/${this.params}`, {
                 content: this.comment
             }, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
                 }
             })
-            console.log(data)
             this.comment = ""
             this.$emit('refetch-data')
         },

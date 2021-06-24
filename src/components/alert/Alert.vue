@@ -4,7 +4,7 @@
             <p id="alertmsg" >
                 <!-- <img id="firstimg" src="https://img.icons8.com/material-two-tone/25/000000/checkmark--v2.png"/> -->
                     {{ msg }}
-                <img @click="closeAlert" id="lastimg" src="https://img.icons8.com/material-two-tone/20/2c3e50/checkmark--v2.png"/>
+                <img id="lastimg" src="https://img.icons8.com/material-two-tone/20/2c3e50/checkmark--v2.png"/>
                 <!-- <img id="lastimg" src="https://img.icons8.com/windows/25/000000/macos-close.png"/> -->
             </p>
         </div>
@@ -17,11 +17,6 @@ import {defineComponent} from 'vue'
 export default defineComponent({
     props: {
         msg: String
-    },
-    methods: {
-        closeAlert() {
-            console.log('closed')
-        }
     }
 })
 </script>

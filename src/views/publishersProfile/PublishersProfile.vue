@@ -12,7 +12,7 @@
             <div v-if="!isLoading" class="profilebox">
                 <div class="profilename">
                     <h1>
-                        <img id="profile2" v-if="user.avatar" :src="`http://localhost:8000/${user.avatar}`" alt="">
+                        <img id="profile2" v-if="user.avatar" :src="`https://blazing-readers-rest-api.herokuapp.com/${user.avatar}`" alt="">
                         <img v-else src="https://img.icons8.com/ios-glyphs/45/2c3e50/user-male-circle.png"/>
                         {{ user.firstName }} {{ user.lastName }}
                     </h1>
@@ -147,11 +147,10 @@ export default defineComponent({
     },
     methods: {
         async getUserInfo() {
-            const {data} = await axios.get(`http://localhost:8000/getuserinfo/${this.userID}`)
+            const {data} = await axios.get(`https://blazing-readers-rest-api.herokuapp.com/getuserinfo/${this.userID}`)
             this.user = data.data
             this.myTweets = data.myTweets
             this.isLoading = false
-            console.log(data)
         },
         async followUser(otherID: string) {
 
@@ -159,12 +158,12 @@ export default defineComponent({
                 return this.isLoggedIn = !this.isLoggedIn
             }
 
-            const {data} = await axios.patch(`http://localhost:8000/followunfollow/${this.myID}/${otherID}`, null, {
+            await axios.patch(`https://blazing-readers-rest-api.herokuapp.com/followunfollow/${this.myID}/${otherID}`, null, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
                 }
             })
-            console.log(data)
+
             this.getUserInfo()
         },
         toggleTab(tabName: string) {
@@ -459,7 +458,7 @@ button:hover {
 
     button {
         margin-bottom: 1rem;
-        width: 70px;
+        width: 80px;
     }
 
     .profilename h1 {

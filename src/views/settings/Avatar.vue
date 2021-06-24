@@ -35,7 +35,6 @@ export default defineComponent({
     },
     methods: {
         toggleForm() {
-            console.log('pota')
             this.isOpen = !this.isOpen
         }
     }
@@ -75,6 +74,24 @@ h3 {
 
 .link .clickable:hover {
     background-color: rgba(0, 0, 0, 0.027);
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 450px) {
+
+    .link .clickable {
+        padding: 0.5rem 0;
+    }
+
+}
+
+@media screen and (max-width: 400px) {
+
+    .title h1 {
+        font-size: 10vw;
+    }
+
 }
 
 </style>

@@ -56,13 +56,13 @@ export default defineComponent({
             formData.append('title', this.title)
             formData.append('content', this.content)
 
-            const {data} = await axios.post(`http://localhost:8000/createblog/${this.userID}`, formData , {
+            const {data} = await axios.post(`https://blazing-readers-rest-api.herokuapp.com/createblog/${this.userID}`, formData , {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     'Authorization': `Bearer ${this.token}`
                 }
             })
-            console.log(formData)
+
             if (data.msg === 'Blog created.') {
                 this.toggleForm()
             }

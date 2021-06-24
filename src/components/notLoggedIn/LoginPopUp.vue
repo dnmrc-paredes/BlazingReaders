@@ -84,4 +84,30 @@ button:disabled {
     z-index: 4;
 }
 
+/* Media Q's */
+
+@media screen and (max-width: 1050px) {
+
+    .popup {
+        width: 40%;
+    }
+    
+}
+
+@media screen and (max-width: 650px) {
+
+    .popup {
+        width: 60%;
+    }
+
+}
+
+@media screen and (max-width: 450px) {
+
+    .popup {
+        width: 80%;
+    }
+
+}
+
 </style>

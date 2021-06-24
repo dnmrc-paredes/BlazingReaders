@@ -53,7 +53,7 @@ export default defineComponent({
                 }, 5000)
             }
 
-            const {data} = await axios.patch(`http://localhost:8000/editpassword/${this.userID}`, {
+            const {data} = await axios.patch(`https://blazing-readers-rest-api.herokuapp.com/editpassword/${this.userID}`, {
                 currentPass: this.currentPass,
                 newPass: this.newPass
             }, {
@@ -163,6 +163,24 @@ form {
     font-family: var(--small);
     font-weight: 400;
     margin-bottom: 1rem;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 900px) {
+
+    form {
+        width: 50%;
+    }
+
+}
+
+@media screen and (max-width: 450px) {
+
+    form {
+        width: 80%;
+    }
+
 }
 
 </style>

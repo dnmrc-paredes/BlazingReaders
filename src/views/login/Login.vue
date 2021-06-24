@@ -43,7 +43,7 @@ export default defineComponent({
 
             this.errors = []
 
-            const {data} = await axios.post('http://localhost:8000/login', {
+            const {data} = await axios.post('https://blazing-readers-rest-api.herokuapp.com/login', {
                 email: this.email,
                 password: this.password
             })

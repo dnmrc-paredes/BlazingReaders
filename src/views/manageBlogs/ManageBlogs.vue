@@ -82,22 +82,21 @@ export default defineComponent({
     },
     methods: {
         async getAllUsers() {
-            const {data} = await axios.get(`http://localhost:8000/getmyblogs/${this.userID}`, {
+            const {data} = await axios.get(`https://blazing-readers-rest-api.herokuapp.com/getmyblogs/${this.userID}`, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
                 }
             })
-            console.log(data)
+
             this.blogs = data.myBlogs
             this.isLoading = false
         },
         async deleteBlog() {
-            const {data} = await axios.delete(`http://localhost:8000/deleteblog/${this.userID}/${this.toBeDeleted}`, {
+            await axios.delete(`https://blazing-readers-rest-api.herokuapp.com/deleteblog/${this.userID}/${this.toBeDeleted}`, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
                 }
             })
-            console.log(data)
             await this.getAllUsers()
             this.toggleDeleteClose()
         },

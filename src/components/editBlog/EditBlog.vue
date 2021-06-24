@@ -50,7 +50,7 @@ export default defineComponent({
 
             this.errors = []
 
-            const {data} = await axios.patch(`http://localhost:8000/editblog/${this.blog._id}`, {
+            const {data} = await axios.patch(`https://blazing-readers-rest-api.herokuapp.com/editblog/${this.blog._id}`, {
                 title: this.title,
                 content: this.content
             }, {

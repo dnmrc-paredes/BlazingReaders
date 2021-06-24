@@ -80,4 +80,19 @@ main {
     flex: 5;
 }
 
+/* Media Q's */
+
+@media screen and (max-width: 1100px) {
+
+    .settingsrootbox {
+        flex-direction: column;
+        margin: 2rem 0.5rem 3rem 0.5rem;
+    }
+
+    .pagecontent {
+        margin-top: 1rem;
+    }
+
+}
+
 </style>

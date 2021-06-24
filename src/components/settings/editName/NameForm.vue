@@ -30,7 +30,7 @@ export default defineComponent({
     },
     methods: {
         async submitEdit() {
-            const {data} = await axios.patch(`http://localhost:8000/editname/${this.userID}`, {
+            const {data} = await axios.patch(`https://blazing-readers-rest-api.herokuapp.com/editname/${this.userID}`, {
                 firstName: this.firstName,
                 lastName: this.lastName
             }, {
@@ -126,6 +126,24 @@ form {
     display: flex;
     flex-direction: column;
     width: 30%;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 900px) {
+
+    form {
+        width: 50%;
+    }
+
+}
+
+@media screen and (max-width: 450px) {
+
+    form {
+        width: 80%;
+    }
+
 }
 
 </style>

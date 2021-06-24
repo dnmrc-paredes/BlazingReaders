@@ -7,7 +7,6 @@
 
         <form @submit.prevent="submitAvatar" enctype="multipart/form-data">
             <input @change="onFileChange" type="file" name="img">
-            <!-- <img :src="`http://localhost:8000/${myProfile}`" alt=""> -->
 
             <h2 v-if="!imgSource" > No image </h2>
             <img v-else :src="imgSource" alt="Avatar Preview">
@@ -36,7 +35,7 @@ export default defineComponent({
             const formData = new FormData()
             formData.append('img', e.target[0].files[0])
 
-            const {data} = await axios.patch(`http://localhost:8000/editavatar/${this.userID}`, formData, {
+            const {data} = await axios.patch(`https://blazing-readers-rest-api.herokuapp.com/editavatar/${this.userID}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     'Authorization': `Bearer ${this.token}`
@@ -148,6 +147,24 @@ img {
     font-family: var(--small);
     font-weight: 400;
     margin-bottom: 1rem;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 900px) {
+
+    form {
+        width: 50%;
+    }
+
+}
+
+@media screen and (max-width: 450px) {
+
+    form {
+        width: 80%;
+    }
+
 }
 
 

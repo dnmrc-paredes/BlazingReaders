@@ -44,7 +44,7 @@
                     <div v-for="user in publishers" :key="user._id" class="user">
                         <div class="userinfo">
                             <p class="publisher" @click="toPublisher(user._id, `${user.firstName} ${user.lastName}`)" >
-                                <img id="profile" v-if="user.avatar" :src="`http://localhost:8000/${user.avatar}`" alt="">
+                                <img id="profile" v-if="user.avatar" :src="`https://blazing-readers-rest-api.herokuapp.com/${user.avatar}`" alt="">
                                 <img v-else src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/>
                                 {{ user.firstName }} {{ user.lastName }}
                             </p>
@@ -86,8 +86,8 @@ export default defineComponent({
     },
     methods: {
         async getAllBLogs() {
-            const {data} = await axios.get(`http://localhost:8000/allblogs/${this.userID}`)
-            console.log(data)
+            const {data} = await axios.get(`https://blazing-readers-rest-api.herokuapp.com/allblogs/${this.userID}`)
+
             this.blogs = data.blogs
             this.publishers = data.randomUsers
             this.isLoading = false
@@ -98,12 +98,12 @@ export default defineComponent({
                 return this.isLoggedIn = !this.isLoggedIn
             }
 
-            const {data} = await axios.patch(`http://localhost:8000/followunfollow/${this.userID}/${otherID}`, null, {
+            await axios.patch(`https://blazing-readers-rest-api.herokuapp.com/followunfollow/${this.userID}/${otherID}`, null, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
                 }
             })
-            console.log(data)
+
             this.getAllBLogs()
         },
         toPublisher(userID: string, name: string) {

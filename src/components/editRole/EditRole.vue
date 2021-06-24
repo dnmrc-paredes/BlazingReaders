@@ -29,11 +29,10 @@ export default defineComponent({
     },
     methods: {
         async submitRole() {
-            const {data} = await axios.patch(`http://localhost:8000/editrole/${this.userID}`, {
+            await axios.patch(`https://blazing-readers-rest-api.herokuapp.com/editrole/${this.userID}`, {
                 newRole: this.selectedRole
             })
 
-            console.log(data.data)
             this.$emit('refetch-data')
             this.toggleEdit(this.userID)
         },

@@ -46,7 +46,7 @@ export default defineComponent({
 
             const {firstName, lastName, email, password} = this
 
-            const {data} = await axios.post('http://localhost:8000/register', {
+            const {data} = await axios.post('https://blazing-readers-rest-api.herokuapp.com/register', {
                 firstName,
                 lastName,
                 email,

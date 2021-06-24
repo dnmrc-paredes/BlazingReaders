@@ -11,7 +11,7 @@
             <!-- <p> <img @click="toggle" src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> </p> -->
             <div v-if="isAuth" class="dropdown">
                 <p>
-                    <img id="profile" @click="toggle" v-if="myProfile" :src="`http://localhost:8000/${myProfile}`" alt="">
+                    <img id="profile" @click="toggle" v-if="myProfile" :src="`https://blazing-readers-rest-api.herokuapp.com/${myProfile}`" alt="">
                     <img v-else @click="toggle" src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/>
                     <!-- <img id="profile" @click="toggle" v-if="myProfile" :src="`http://localhost:8000/${myProfile}`" alt="">
                     <img @click="toggle" src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/>  -->
@@ -38,7 +38,7 @@ export default defineComponent({
     data() {
         return {
             currentW: window.innerWidth,
-            isSmall: window.innerWidth < 500
+            isSmall: window.innerWidth < 600
         }
     },
     methods: {
@@ -97,7 +97,7 @@ export default defineComponent({
     created() {
         window.onresize = () => {
             this.currentW = window.innerWidth
-            if (this.currentW < 500) {
+            if (this.currentW < 600) {
                 this.isSmall = true
             } else {
                 this.isSmall = false

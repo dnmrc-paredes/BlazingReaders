@@ -18,7 +18,7 @@
                 <div class="title">
                     <h1> {{ blog.title }} </h1>
                 </div>
-                <img id="blogimg" :src="`http://localhost:8000/${blog.img}`" alt="blog img">
+                <img id="blogimg" :src="`https://blazing-readers-rest-api.herokuapp.com/${blog.img}`" alt="blog img">
                 <div class="content">
                     <p id="content" > {{ blog.content }} </p>
                 </div>
@@ -97,10 +97,9 @@ export default defineComponent({
     },
     methods: {
         async getBlog() {
-            const {data} = await axios.get(`http://localhost:8000/getoneblog/${this.paramsID}`)
+            const {data} = await axios.get(`https://blazing-readers-rest-api.herokuapp.com/getoneblog/${this.paramsID}`)
             this.blog = data.data
             this.isLoading = false
-            console.log(data.data)
         },
         async likeBlog() {
 
@@ -108,12 +107,12 @@ export default defineComponent({
                 return  this.isLoggedIn = !this.isLoggedIn
             }
 
-            const {data} = await axios.patch(`http://localhost:8000/likeblog/${this.userID}/${this.paramsID}`, null, {
+            await axios.patch(`https://blazing-readers-rest-api.herokuapp.com/likeblog/${this.userID}/${this.paramsID}`, null, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
                 }
             })
-            console.log(data)
+
             this.getBlog()
         },
         refetch() {
@@ -213,7 +212,8 @@ p#content {
     margin-top: 1rem;
     font-family: var(--small);
     font-weight: 500;
-    word-wrap: break-word;
+    text-align: left;
+    /* word-wrap: break-word; */
     white-space: pre-line;
 }
 
@@ -349,8 +349,16 @@ img#blogimg {
 
 @media screen and (max-width: 500px) {
 
+    .title h1 {
+        font-size: 5vw;
+    }
+
     img#blogimg {
         width: 100%;
+    }
+
+    p#content {
+        font-size: 3.7vw;
     }
 
 }

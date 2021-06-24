@@ -139,4 +139,12 @@ h3 {
     color: rgb(177, 171, 171);
 }
 
+@media screen and (max-width: 500px) {
+
+    .userlist {
+        width: 90%;
+    }
+
+}
+
 </style>

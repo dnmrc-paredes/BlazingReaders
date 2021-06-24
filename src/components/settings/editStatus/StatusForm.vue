@@ -36,7 +36,7 @@ export default defineComponent({
                 return 
             }
 
-            const {data} = await axios.patch(`http://localhost:8000/editrole/${this.userID}`, {
+            const {data} = await axios.patch(`https://blazing-readers-rest-api.herokuapp.com/editrole/${this.userID}`, {
                 newRole: this.newRole
             }, {
                 headers: {
@@ -144,6 +144,24 @@ form {
     font-family: var(--small);
     font-weight: 400;
     margin-bottom: 1rem;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 900px) {
+
+    form {
+        width: 50%;
+    }
+
+}
+
+@media screen and (max-width: 450px) {
+
+    form {
+        width: 80%;
+    }
+
 }
 
 </style>

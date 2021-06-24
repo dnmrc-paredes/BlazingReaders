@@ -78,7 +78,7 @@ export default defineComponent({
     },
     methods: {
         async dashboardInfo() {
-            const {data} = await axios.get(`http://localhost:8000/dashboard/${this.userID}`)
+            const {data} = await axios.get(`https://blazing-readers-rest-api.herokuapp.com/dashboard/${this.userID}`)
             this.totalBlogs = data.allBlogs,
             this.mostLikes = data.top3LikedBlogs,
             this.mostComments = data.top3MostCommentedBlogs
