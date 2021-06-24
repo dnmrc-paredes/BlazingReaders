@@ -26,6 +26,7 @@ import TheSettingsSidebar from '@/components/settingsSidebar/TheSettingsSidebar.
 import Personal from '@/views/settings/Personal.vue'
 import Avatar from '@/views/settings/Avatar.vue'
 import Password from '@/views/settings/Password.vue'
+import Publisher from '@/views/settings/Publisher.vue'
 
 import {defineComponent} from 'vue'
 export default defineComponent({
@@ -43,6 +44,10 @@ export default defineComponent({
 
             if (this.$route.query.tab === 'password') {
                 return Password
+            }
+
+            if (this.$route.query.tab === 'publisher') {
+                return Publisher
             }
 
             return Personal

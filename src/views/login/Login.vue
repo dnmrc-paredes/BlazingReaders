@@ -51,7 +51,7 @@ export default defineComponent({
             if (data.data) {
                 this.$store.dispatch('setUser', data)
                 this.$store.dispatch('setAuth')
-                this.$store.dispatch('myInfo')
+                await this.$store.dispatch('myInfo')
                 return this.$router.push({name: 'Root', path: '/'})
             }
             
@@ -195,6 +195,28 @@ button:disabled {
     width: 100%;
     padding: 4rem 2rem;
     margin: auto 0;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 600px) {
+
+    main {
+        flex-direction: column;
+    }
+
+    .login1 {
+        display: none;
+    }
+
+}
+
+@media screen and (max-width: 450px) {
+
+    main {
+        margin: 1rem;
+    }
+
 }
 
 </style>

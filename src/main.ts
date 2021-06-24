@@ -9,6 +9,7 @@ import { Iuser } from './interfaces/user'
 import TheSidebar from '@/components/sidebar/TheSidebar.vue'
 import TheHeader from '@/components/header/TheHeader.vue'
 import LoginPopUp from '@/components/notLoggedIn/LoginPopUp.vue'
+import Alert from '@/components/alert/Alert.vue'
 
 declare module '@vue/runtime-core' {
     // Declare your own store states.
@@ -32,6 +33,7 @@ createApp(App).
 component('the-sidebar', TheSidebar).
 component('the-header', TheHeader ).
 component('login-pop-up', LoginPopUp).
+component('alert', Alert).
 use(store).
 use(router).
 mount('#app')

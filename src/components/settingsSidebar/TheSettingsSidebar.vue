@@ -2,6 +2,7 @@
     <nav>
         <ul>
             <li @click="toPersonal" > Personal Information </li>
+            <li @click="toPublisher" > Publisher Settings </li>
             <li @click="toAvatar" > Change Avatar </li>
             <li @click="toPassword" > Change Password </li>
         </ul>
@@ -21,6 +22,9 @@ export default defineComponent({
         },
         toPassword() {
             this.$router.push({name: 'Settings', path: '/settings', query: {tab: 'password'}})
+        },
+        toPublisher() {
+            this.$router.push({name: 'Settings', path: '/settings', query: {tab: 'publisher'}})
         }
     }
 })

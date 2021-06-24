@@ -11,7 +11,11 @@
         <transition name="profileroot" >
             <div v-if="!isLoading" class="profilebox">
                 <div class="profilename">
-                    <h1> {{ user.firstName }} {{ user.lastName }} </h1>
+                    <h1>
+                        <img id="profile2" v-if="user.avatar" :src="`http://localhost:8000/${user.avatar}`" alt="">
+                        <img v-else src="https://img.icons8.com/ios-glyphs/45/2c3e50/user-male-circle.png"/>
+                        {{ user.firstName }} {{ user.lastName }}
+                    </h1>
                     <button @click="followUser(user._id)" v-if="!notSame" > {{ isFollowed ? 'Unfollow' : 'Follow' }} </button>
                 </div>
 
@@ -38,12 +42,12 @@
         </transition>
 
         <transition name="tab" >
-            <div v-if="!isLoading && user.role === 'admin'" class="switchtabs">
+            <div v-if="!isLoading" class="switchtabs">
                 <div @click="toggleTab('feed')" class="feedtab">
                     <p> Feed </p>
                 </div>
 
-                <div @click="toggleTab('publish')" class="publishtab">
+                <div v-if="user.role === 'admin'" @click="toggleTab('publish')" class="publishtab">
                     <p> Blogs </p>
                 </div>
             </div>
@@ -425,6 +429,49 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 750px) {
+
+    .profilename h1 {
+        font-size: 5vw;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+
+    .profilebox {
+        margin: 1rem;
+        padding: 1rem 0.5rem;
+    }
+
+    .switchtabs {
+        margin: 1rem;
+        padding: 0.5rem;
+    }
+
+    .profilename {
+        flex-direction: column;
+    }
+
+    button {
+        margin-bottom: 1rem;
+        width: 70px;
+    }
+
+    .profilename h1 {
+        font-size: 8vw;
+    }
+
+    .profileblogs,
+    .profilefeed {
+        margin: 0rem 1rem;
+        padding: 0.5rem;
+    }
+    
 }
 
 </style>

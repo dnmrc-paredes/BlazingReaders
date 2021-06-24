@@ -213,6 +213,8 @@ p#content {
     margin-top: 1rem;
     font-family: var(--small);
     font-weight: 500;
+    word-wrap: break-word;
+    white-space: pre-line;
 }
 
 img#blogimg {
@@ -239,6 +241,10 @@ img#blogimg {
 .title {
     display: flex;
     justify-content: center;
+}
+
+.title h1 {
+    text-align: center;
 }
 
 .content {
@@ -325,6 +331,28 @@ img#blogimg {
     align-items: center;
     font-family: var(--small);
     font-weight: 400;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 700px) {
+
+    img#blogimg {
+        width: 70%;
+    }
+
+    .oneblog {
+        margin: 3rem 1rem 0 1rem;
+    }
+    
+}
+
+@media screen and (max-width: 500px) {
+
+    img#blogimg {
+        width: 100%;
+    }
+
 }
 
 </style>

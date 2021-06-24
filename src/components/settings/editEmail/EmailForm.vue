@@ -1,5 +1,10 @@
 <template>
     <main>
+
+        <transition name="alert" >
+            <alert v-if="msg" :msg="msg" > </alert>
+        </transition>
+
         <form @submit.prevent="submitEdit" method="post">
 
             <div class="errorhandler">
@@ -29,7 +34,8 @@ export default defineComponent({
         return {
             email: this.$store.state.rootUser.email as string,
             password: "" as string,
-            errors: [] as string[]
+            errors: [] as string[],
+            msg: "" as string
         }
     },
     methods: {
@@ -47,7 +53,10 @@ export default defineComponent({
             })
 
             if (data.status === 'ok') {
-                alert('Email Changed Successfully.')
+                this.msg = 'Email Changed Successfully.'
+                setTimeout(() => {
+                    this.msg = ''
+                }, 5000)
                 return this.$store.dispatch('myInfo')
             }
 
@@ -82,11 +91,13 @@ export default defineComponent({
 
 /* Animations & Transitions */
 
-.error-enter-active {
+.error-enter-active,
+.alert-enter-active {
     animation: fade 0.3s ease-in;
 }
 
-.error-leave-active {
+.error-leave-active,
+.alert-leave-active {
     animation: fade 0.3s ease-in reverse;
 }
 

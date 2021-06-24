@@ -1,13 +1,13 @@
 <template>
     <nav>
         <div class="navlogo">
-            <h1> Blazing </h1>
+            <h1 @click="toHome" > {{ isSmall ? 'BR' : 'BlazingReaders' }} </h1>
         </div>
 
         <div class="navlinks">
-            <router-link to="/" > Home </router-link>
+            <router-link v-if="!isSmall" to="/" > Home </router-link>
             <router-link to="/blogs" > Blogs </router-link>
-            <router-link to="/about" > About </router-link>
+            <router-link v-if="!isSmall" to="/about" > About </router-link>
             <!-- <p> <img @click="toggle" src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> </p> -->
             <div v-if="isAuth" class="dropdown">
                 <p>
@@ -17,10 +17,12 @@
                     <img @click="toggle" src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/>  -->
                 </p>
                 <div v-if="dropdownStatus" class="droplist">
+                    <li @click="toHome" v-if="isSmall" > Home </li>
                     <li @click="toProfile" > Profile </li>
                     <li @click="toDashboard" v-if="userRole === 'admin'" > Dashboard </li>
-                    <li v-else> Become a Publisher </li>
+                    <li @click="toPublisher" v-else> Become a Publisher </li>
                     <li @click="toSettings" > Settings </li>
+                    <li @click="toAbout" v-if="isSmall" > About </li>
                     <li @click="logout" > Logout </li>
                 </div>
             </div>
@@ -33,6 +35,12 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
+    data() {
+        return {
+            currentW: window.innerWidth,
+            isSmall: window.innerWidth < 500
+        }
+    },
     methods: {
         login() {
             this.$router.push({name: 'Login', path: '/login'})
@@ -41,12 +49,14 @@ export default defineComponent({
             this.toggle()
             this.$store.dispatch('unsetAuth')
             this.$store.dispatch('unsetMyInfo')
-            this.$router.replace({name: 'Root', path: '/'})
+            // this.$router.replace({name: 'Root', path: '/'})
+            this.$router.replace({name: 'Login', path: '/login'})
         },
         toggle() {
             this.$store.dispatch('dropdown/toggleDropdown')
         },
         toDashboard() {
+            this.toggle()
             this.$router.push({name: 'Admin', path: '/admin'})
         },
         toProfile() {
@@ -56,6 +66,18 @@ export default defineComponent({
         toSettings() {
             this.toggle()
             this.$router.push({name: 'Settings', path: '/settings', query: {tab: 'profile'}})
+        },
+        toPublisher() {
+            this.toggle()
+            this.$router.push({name: 'Settings', path: '/settings', query: {tab: 'publisher'}})
+        },
+        toHome() {
+            this.toggle()
+            this.$router.push({name: 'Root', path: '/'})
+        },
+        toAbout() {
+            this.toggle()
+            this.$router.push({name: 'About', path: '/about'})
         }
     },
     computed: {
@@ -63,13 +85,23 @@ export default defineComponent({
             return this.$store.state.dropdown?.isDropdownOpen
         },
         userRole() {
-            return this.$store.state.user.role
+            return this.$store.state.rootUser.role
         },
         isAuth() {
             return this.$store.state.isAuth
         },
         myProfile() {
             return this.$store.state.rootUser.avatar
+        }
+    },
+    created() {
+        window.onresize = () => {
+            this.currentW = window.innerWidth
+            if (this.currentW < 500) {
+                this.isSmall = true
+            } else {
+                this.isSmall = false
+            }
         }
     }
 })
@@ -122,6 +154,10 @@ a:hover {
     align-items: center;
 }
 
+.navlogo h1 {
+    cursor: pointer;
+}
+
 .navlinks {
     flex: 10;
     display: flex;
@@ -144,13 +180,6 @@ a:hover {
     flex-direction: column;
     right: 10px;
     width: 200px;
-}
-
-/* Profile Image */
-
-img#profile {
-    width: 40px;
-    border-radius: 50%;
 }
 
 </style>

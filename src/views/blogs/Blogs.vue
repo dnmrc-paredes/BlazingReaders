@@ -21,7 +21,7 @@
                     </transition-group>
                 </div>
 
-                <button :disabled="isTheSame" @click="loadMore" > {{ isTheSame ? 'Max Results' : 'Load more' }} </button>
+                <button v-if="blogs.length >= 5" :disabled="isTheSame" @click="loadMore" > {{ isTheSame ? 'Max' : 'Load more' }} </button>
             </div>
         </transition>
         
@@ -137,6 +137,24 @@ button:disabled {
     margin: 0.2rem 0;
     padding: 1rem 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.247);
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 500px) {
+
+    .blogrootbox {
+        margin: 2rem 1rem;
+    }
+
+    h1#Blogs {
+        font-size: 12vw !important;
+    }
+
+    h2 {
+        font-size: 6vw;
+    }
+
 }
 
 </style>

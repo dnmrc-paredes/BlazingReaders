@@ -1,5 +1,10 @@
 <template>
     <main>
+
+        <transition name="alert" >
+            <alert v-if="msg" :msg="msg" > </alert>
+        </transition>
+
         <form @submit.prevent="submitEdit" method="post">
 
             <div class="errorhandler">
@@ -32,7 +37,8 @@ export default defineComponent({
             currentPass: "" as string,
             newPass: "" as string,
             confirmPass: "" as string,
-            errors: [] as string[]
+            errors: [] as string[],
+            msg: "" as string
         }
     },
     methods: {
@@ -60,7 +66,10 @@ export default defineComponent({
                 this.currentPass = ""
                 this.newPass = ""
                 this.confirmPass = ""
-                return alert('Password Succesfully Changed.')
+                this.msg = 'Password Succesfully Changed.'
+                return setTimeout(() => {
+                    this.msg = ''
+                }, 5000)
             }
 
             if (data.msg) {
@@ -88,11 +97,13 @@ export default defineComponent({
 
 /* Animations & Transitions */
 
-.error-enter-active {
+.error-enter-active,
+.alert-enter-active {
     animation: fade 0.3s ease-in;
 }
 
-.error-leave-active {
+.error-leave-active,
+.alert-leave-active {
     animation: fade 0.3s ease-in reverse;
 }
 

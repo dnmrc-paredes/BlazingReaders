@@ -56,6 +56,7 @@ export default defineComponent({
             if (data.data) {
                 this.$store.dispatch('setUser', data)
                 this.$store.dispatch('setAuth')
+                await this.$store.dispatch('myInfo')
                 return this.$router.push({name: 'Root', path: '/'})
             }
 
@@ -180,6 +181,24 @@ button:disabled {
     color: white;
     background-color: #010101;
     transition-duration: 0.3s;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 550px) {
+
+    main {
+        margin: 1rem;
+    }
+
+    form {
+        width: 80%;
+    }
+    
+    form h1 {
+        font-size: 8vw;
+    }
+
 }
 
 </style>

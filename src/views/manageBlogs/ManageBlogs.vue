@@ -232,7 +232,8 @@ form button {
 .sidebar {
     flex: 1;
     display: flex;
-    min-height: 100vh;
+    /* min-height: 100vh; */
+    height: 100%;
 }
 
 .adminbox {
@@ -252,6 +253,39 @@ form button {
 
 .grpbtns button {
     margin: 0 0.5rem;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 550px) {
+
+    main {
+        flex-direction: column;
+    }
+
+    h1 {
+        margin-top: 3rem;
+        font-size: 12vw;
+    }
+
+    th, tr {
+        padding: 1rem 0.5rem;
+    }
+
+    table {
+        margin-top: 1rem;
+    }
+
+    .sidebar {
+        flex: 1;
+        /* min-height: none; */
+        height: 100%;
+    }
+
+    .adminbox {
+        margin: 1rem;
+    }
+
 }
 
 </style>

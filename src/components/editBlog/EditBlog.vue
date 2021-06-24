@@ -196,4 +196,23 @@ button:disabled {
     z-index: 1;
 }
 
+/* Media Q's */
+
+@media screen and (max-width: 900px) {
+
+    form {
+        width: 70%;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+
+    form {
+        margin: 4rem auto;
+        width: 95%;
+    }
+
+}
+
 </style>

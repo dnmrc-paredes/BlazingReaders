@@ -20,6 +20,7 @@ main {
 }
 
 .modal {
+    text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,6 +29,14 @@ main {
     background-color: whitesmoke;
     margin: auto;
     border-radius: 10px;
+}
+
+@media screen and (max-width: 400px) {
+
+    .modal {
+        margin: auto 2rem;
+    }
+
 }
 
 </style>

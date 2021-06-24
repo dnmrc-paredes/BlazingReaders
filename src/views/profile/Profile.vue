@@ -11,7 +11,11 @@
         <transition name="profileroot" >
             <div v-if="!isLoading" class="profilebox">
                 <div class="profilename">
-                    <h1> {{ user.firstName }} {{ user.lastName }} </h1>
+                    <h1>
+                        <img id="profile2" v-if="user.avatar" :src="`http://localhost:8000/${user.avatar}`" alt="">
+                        <img v-else src="https://img.icons8.com/ios-glyphs/45/2c3e50/user-male-circle.png"/>
+                        {{ user.firstName }} {{ user.lastName }}
+                    </h1>
                 </div>
 
                 <p v-if="isPublisher" > Publisher <img src="https://img.icons8.com/material-sharp/15/000000/star.png"/> </p>
@@ -56,7 +60,11 @@
                         </form>
                     </div>
 
-                    <div class="feedbox">
+                    <div v-if="myTweets.length === 0" class="notweets">
+                        <h2> No tweets </h2>
+                    </div>
+
+                    <div v-else class="feedbox">
                         <transition-group name="everytweet" >
                             <div v-for="tweet in myTweets" :key="tweet._id" class="feed">
                                 <div class="feedupper">
@@ -203,14 +211,14 @@ export default defineComponent({
             return this.$store.state.user._id
         },
         isPublisher() {
-            if (this.$store.state.user.role === Roles.ADMIN) {
+            if (this.$store.state.rootUser.role === Roles.ADMIN) {
                 return true
             }
 
             return false
         },
         notSame() {
-            if (this.userID === this.$store.state.user._id) {
+            if (this.userID === this.$store.state.rootUser._id) {
                 return true
             }
 
@@ -437,6 +445,12 @@ textarea {
     align-items: center;
 }
 
+/* If No Tweets */
+
+.notweets {
+    margin-top: 2rem;
+}
+
 /* Options Dropdown */
 
 .openoptions {
@@ -475,6 +489,40 @@ textarea {
 
 .withborder {
     border-bottom: solid 1px rgba(0, 0, 0, 0.308);
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 750px) {
+
+    .profilename h1 {
+        font-size: 5vw;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+
+    .profilebox {
+        margin: 1rem;
+        padding: 1rem 0.5rem;
+    }
+
+    .switchtabs {
+        margin: 1rem;
+        padding: 0.5rem;
+    }
+
+    .profilename h1 {
+        font-size: 8vw;
+    }
+
+    .profileblogs,
+    .profilefeed {
+        margin: 0rem 1rem;
+        padding: 0.5rem;
+    }
+    
 }
 
 </style>

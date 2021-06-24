@@ -1,5 +1,6 @@
 <template>
     <nav>
+        
         <ul>
             <li> <img @click="toHome" src="https://img.icons8.com/ios-glyphs/40/FFAF00/home.png"/> </li>
             <li> <img @click="toDashboard" src="https://img.icons8.com/material-rounded/40/FFAF00/dashboard.png"/> </li>
@@ -50,9 +51,6 @@ export default defineComponent({
             this.$store.dispatch('unsetMyInfo')
             this.$router.push({name: 'Login', path: '/login'})
         }
-        // toUsers() {
-        //     this.$router.push({name: 'AllUsers', path: '/allusers'})
-        // },
     }
 })
 
@@ -85,8 +83,9 @@ nav {
     position: relative;
     /* #00008b */
     /* border-right: #2c3e50 solid 0.1px; */
-    background-color: #010101;
+    /* background-color: #010101; */
     /* background-color: whitesmoke; */
+    /* color: #2c3e50; */
 }
 
 ul {
@@ -108,6 +107,22 @@ img {
 
 img:hover {
     transform: scale(1.1);
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 550px) {
+
+    nav {
+        padding: 0.5rem;
+        height: 4rem;
+        width: 100%;
+    }
+
+    ul {
+        flex-direction: row;
+    }
+
 }
 
 </style>

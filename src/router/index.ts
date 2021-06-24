@@ -102,7 +102,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Admin,
     beforeEnter(to, from, next) {
 
-      if (!State.state.isAuth || State.state.user.role !== Roles.ADMIN) {
+      if (!State.state.isAuth || State.state.rootUser.role !== Roles.ADMIN) {
         return next('/')
       }
 
@@ -116,7 +116,7 @@ const routes: Array<RouteRecordRaw> = [
     component: ManageBlogs,
     beforeEnter(to, from, next) {
 
-      if (!State.state.isAuth || State.state.user.role !== Roles.ADMIN) {
+      if (!State.state.isAuth || State.state.rootUser.role !== Roles.ADMIN) {
         return next('/')
       }
 

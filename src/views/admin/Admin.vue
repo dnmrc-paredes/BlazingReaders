@@ -23,15 +23,21 @@
                     <div class="blogsinfo">
                         <div class="mostlikes">
                             <h1 class="most"> Top 3 Most Likes </h1>
+                            <div v-if="mostLikes.length === 0" class="nothing">
+                                <p> No blogs </p>
+                            </div>
                             <div v-for="blog in mostLikes" :key="blog._id" class="blog">
                                 <!-- <h2> {{ blog.title }} </h2> -->
-                                <router-link :to="{name: 'OneBlog', params: { blogID: blog._id }}"> {{ blog.title }}  </router-link> 
+                                <router-link :to="{name: 'OneBlog', params: { blogID: blog._id }}"> {{ blog.title }} </router-link> 
                                 <p> Total Likes: {{ blog.totalLikes }} </p>
                             </div>
                         </div>
 
                         <div class="mostcomments">
                             <h1 class="most"> Top 3 Most Comments </h1>
+                            <div v-if="mostComments.length === 0" class="nothing">
+                                <p> No blogs </p>
+                            </div>
                             <div v-for="blog in mostComments" :key="blog._id" class="blog">
                                 <!-- <h2> {{ blog.title }} </h2> -->
                                 <router-link :to="{name: 'OneBlog', params: { blogID: blog._id }}"> {{ blog.title }}  </router-link> 
@@ -135,7 +141,8 @@ h1.most {
 .sidebar {
     flex: 1;
     display: flex;
-    min-height: 100vh;
+    /* min-height: 100vh; */
+    height: 100%;
 }
 
 .adminbox {
@@ -185,6 +192,48 @@ h1.most {
 
 .blog {
     margin: 1rem 0;
+}
+
+
+/* Media Q's */
+
+@media screen and (max-width: 900px) {
+
+    .blogsinfo {
+        flex-direction: column;
+    }
+
+    .dashboardinfos .mostlikes, .dashboardinfos .mostcomments {
+        margin: 0.5rem 0;
+    }
+
+}
+
+@media screen and (max-width: 550px) {
+
+    main {
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 12vw;
+    }
+
+    h2, a {
+        font-size: 5.2vw;
+    }
+
+    .sidebar {
+        flex: 1;
+        /* min-height: none; */
+        height: 100%;
+    }
+
+    .adminbox {
+        flex: 2;
+        margin: 1rem;
+    }
+
 }
 
 </style>

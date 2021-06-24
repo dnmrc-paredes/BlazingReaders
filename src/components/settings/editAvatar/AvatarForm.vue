@@ -1,5 +1,10 @@
 <template>
     <main>
+
+        <transition name="alert" >
+            <alert v-if="msg" :msg="msg" > </alert>
+        </transition>
+
         <form @submit.prevent="submitAvatar" enctype="multipart/form-data">
             <input @change="onFileChange" type="file" name="img">
             <!-- <img :src="`http://localhost:8000/${myProfile}`" alt=""> -->
@@ -20,7 +25,8 @@ import { defineComponent } from 'vue'
 export default defineComponent({
     data() {
         return {
-            imgSource: "" 
+            imgSource: "",
+            msg: "" as string
         } 
     },
     methods: {
@@ -38,7 +44,10 @@ export default defineComponent({
             })
             
             if (data.status === 'ok') {
-                alert('Avatar Changed Successfully.')
+                this.msg = 'Avatar Changed Successfully.'
+                setTimeout(() => {
+                    this.msg = ''
+                }, 5000)
                 return this.$store.dispatch('myInfo')
             }
         },
@@ -63,6 +72,16 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+/* Animatios & Transitions */
+
+.alert-enter-active {
+    animation: fade 0.3s ease-in;
+}
+
+.alert-leave-active {
+    animation: fade 0.3s ease-out reverse;
+}
 
 main {
     display: flex;

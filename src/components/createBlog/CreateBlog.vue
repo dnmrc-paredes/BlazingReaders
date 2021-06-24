@@ -1,7 +1,9 @@
 <template>
     <main>
+
         <div @click="toggleForm" class="close"> </div>
         <form @submit.prevent="submitBlog" enctype="multipart/form-data" method="post">
+
             <h1> {{ propTitle }} </h1>
 
             <transition-group name="showerror" >
@@ -196,6 +198,26 @@ button:disabled {
     bottom: 0;
     left: 0;
     z-index: 1;
+}
+
+
+/* Media Q's */
+
+@media screen and (max-width: 900px) {
+
+    form {
+        width: 70%;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+
+    form {
+        margin: 4rem auto;
+        width: 95%;
+    }
+
 }
 
 </style>

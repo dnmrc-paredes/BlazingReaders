@@ -78,4 +78,16 @@
   justify-content: center;
 }
 
+/* Profile Images */
+
+img#profile {
+    width: 35px;
+    border-radius: 50%;
+}
+
+img#profile2 {
+    width: 40px;
+    border-radius: 50%;
+}
+
 </style>

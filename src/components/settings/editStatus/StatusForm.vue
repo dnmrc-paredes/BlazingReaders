@@ -5,11 +5,13 @@
             <alert v-if="msg" :msg="msg" > </alert>
         </transition>
 
-        <form @submit.prevent="submitEdit" method="post">
-            <label for="firstname"> First Name </label>
-            <input type="text" v-model="firstName" name="firstname">
-            <label for="lastname"> Last Name </label>
-            <input type="text" v-model="lastName" name="lastname">
+        <form @submit.prevent="submitRole" method="post">
+            <label for="role"> <strong> Current Status: {{ role }} </strong> </label>
+            <select v-model="newRole" name="role">
+                <option value="" selected disabled hidden> Select </option>
+                <option value="admin"> Publisher </option>
+                <option value="normal"> Normal </option>
+            </select>
             <button :disabled="isEmpty" type="submit"> Confirm </button>
         </form>
     </main>
@@ -18,34 +20,38 @@
 <script lang="ts">
 import axios from 'axios'
 
-import {defineComponent} from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
     data() {
         return {
-            firstName: this.$store.state.rootUser.firstName,
-            lastName: this.$store.state.rootUser.lastName,
-            msg: ""
+            newRole: "" as string,
+            msg: "" as string
         }
     },
     methods: {
-        async submitEdit() {
-            const {data} = await axios.patch(`http://localhost:8000/editname/${this.userID}`, {
-                firstName: this.firstName,
-                lastName: this.lastName
+        async submitRole() {
+
+            if (!this.newRole) {
+                return 
+            }
+
+            const {data} = await axios.patch(`http://localhost:8000/editrole/${this.userID}`, {
+                newRole: this.newRole
             }, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
                 }
             })
-            
+
             if (data.status === 'ok') {
-                this.msg = 'Name Change Success!'
+                this.msg = 'Status Succesfully Changed.'
                 setTimeout(() => {
                     this.msg = ''
                 }, 5000)
                 return this.$store.dispatch('myInfo')
             }
+
         }
     },
     computed: {
@@ -55,8 +61,11 @@ export default defineComponent({
         token() {
             return this.$store.state.token
         },
+        role() {
+            return this.$store.state.rootUser.role
+        },
         isEmpty() {
-            if (!this.firstName || !this.lastName) {
+            if (!this.newRole) {
                 return true
             }
 
@@ -64,6 +73,7 @@ export default defineComponent({
         }
     }
 })
+
 </script>
 
 <style scoped>
@@ -92,7 +102,7 @@ label {
     font-size: 0.8rem;
 }
 
-input {
+select {
     margin: 0.3rem 0;
     padding: 0.3rem;
     font-family: var(--small);
@@ -125,7 +135,15 @@ button:disabled {
 form {
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 20%;
+}
+
+.error p {
+    color: red;
+    font-size: 0.8rem;
+    font-family: var(--small);
+    font-weight: 400;
+    margin-bottom: 1rem;
 }
 
 </style>

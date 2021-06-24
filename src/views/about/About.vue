@@ -24,6 +24,11 @@
                 <li> Node JS </li>
             </ul>
 
+            <div class="contact">
+                <h2> If you have any suggestions or questions contact me at:  </h2>
+                <p> tmlolololdev@gmail.com </p>
+            </div>
+
         </div>
         
     </main>
@@ -62,6 +67,34 @@ li {
 
 .aboutrootbox {
     margin: 7rem 3rem 3rem 3rem;
+}
+
+/* Contact */
+
+.contact {
+    margin-top: 1rem;
+}
+
+.contact h2 {
+    margin-bottom: 1rem;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 500px) {
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .aboutrootbox {
+        margin: 2rem 1rem;
+    }
+
 }
 
 </style>

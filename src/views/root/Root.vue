@@ -43,7 +43,11 @@
                 <transition-group name="suggestpublishers" mode="out-in" >
                     <div v-for="user in publishers" :key="user._id" class="user">
                         <div class="userinfo">
-                            <p class="publisher" @click="toPublisher(user._id, `${user.firstName} ${user.lastName}`)" > <img src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/> {{ user.firstName }} {{ user.lastName }} </p>
+                            <p class="publisher" @click="toPublisher(user._id, `${user.firstName} ${user.lastName}`)" >
+                                <img id="profile" v-if="user.avatar" :src="`http://localhost:8000/${user.avatar}`" alt="">
+                                <img v-else src="https://img.icons8.com/ios-glyphs/40/2c3e50/user-male-circle.png"/>
+                                {{ user.firstName }} {{ user.lastName }}
+                            </p>
                             <button @click="followUser(user._id)" > Follow </button>
                         </div>
                     </div>
@@ -116,7 +120,7 @@ export default defineComponent({
     },
     computed: {
         userID() {
-            return this.$store.state.user._id ?? 'notauth'
+            return this.$store.state.rootUser._id ?? 'notauth'
         },
         token() {
             return this.$store.state.token
@@ -294,5 +298,75 @@ p.publisher {
     justify-content: center;
 }
 
+/* Alert */
+
+p#alertmsg img#firstimg {
+    margin-right: 0.5rem;
+}
+
+p#alertmsg img#laststimg {
+    margin-left: 0.5rem;
+}
+
+p#alertmsg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Media Q's */
+
+@media screen and (max-width: 900px) {
+
+    .recentblogs {
+        flex: 2;
+        /* background-color: red; */
+        padding: 0;
+    }
+
+    .publishers {
+        flex: 1;
+        padding: 0;
+    }
+
+    .userinfo {
+        padding: 0;
+        padding: 1rem 0;
+    }
+
+}
+
+@media screen and (max-width: 850px)  {
+
+    .rootbox {
+        flex-direction: column;
+    }
+
+    .recentblogs {
+        order: 2;
+    }
+    
+    .publishers {
+        order: 1;
+        padding: 1rem 0;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+
+    .publishers {
+        display: none;
+    }
+
+    .recentblogs {
+        margin: 0;
+    }
+
+    h1.blogyoumightlike {
+        font-size: 10vw;
+    }
+
+}
 
 </style>
