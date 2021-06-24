@@ -16,7 +16,7 @@ export const actions: ActionTree<State, State> = {
     },
     async myInfo(context: ActionContext<State, State>) {
         const userID = context.rootState.user._id
-        const {data} = await axios.get(`http://localhost:8000/getuserinfo/${userID}`)
+        const {data} = await axios.get(`https://blazing-readers-rest-api.herokuapp.com/getuserinfo/${userID}`)
         context.commit('myInfo', data.data)
     },
     unsetMyInfo(context: ActionContext<State, State>) {
